@@ -13,7 +13,7 @@ class Timer
 
 	def start
 		if !is_on?
-			set_status(1) # on/off, on: true/false
+			turn_on
 			time = add_start_time
 			save
 			time		
@@ -22,7 +22,7 @@ class Timer
 
 	def stop
 		if is_on?
-			set_status(0)
+			turn_off
 			time = add_stop_time
 			save
 			time
@@ -30,9 +30,8 @@ class Timer
 	end
 
 	def add_task(task)
-		@db[today] ||= {}
-		@db[today]["tasks"] ||= []
-		@db[today]["tasks"].push(task)
+		today["tasks"] ||= []
+		today["tasks"].push(task)
 		save
 	end
 
@@ -46,7 +45,7 @@ class Timer
 
 	private	
 	def is_on?
-		status == 1
+		on == true
 	end
 
 	def total_elapsed_time(day_counter = 0)
@@ -73,22 +72,16 @@ class Timer
 		day["intervals"] if day
 	end
 
-	def set_status(status)
-		@db[today] ||= {}
-		@db[today]["status"] = status
-	end
-
 	def add_start_time
 		time = time_now
-		@db[today] ||= {}
-		@db[today]["intervals"] ||= []
-		@db[today]["intervals"].push({"start" => time})
+		today["intervals"] ||= []
+		today["intervals"].push({"start" => time})
 		time
 	end
 
 	def add_stop_time
 		time = time_now
-		@db[today]["intervals"].last["stop"] = time
+		today["intervals"].last["stop"] = time
 		time		
 	end
 
@@ -97,6 +90,14 @@ class Timer
 	end
 
 	def today
+		if !@today			
+			@db[today_key] ||= {}
+			@today = @db[today_key]
+		end
+		@today
+	end
+
+	def today_key
 		Date.today.to_time.to_i.to_s
 	end
 
@@ -105,10 +106,18 @@ class Timer
 	end
 
 	def day(day_counter = 0)
-		@db[(today.to_i + day_counter * 24 * 60 * 60).to_s]
+		@db[(today_key.to_i + day_counter * 24 * 60 * 60).to_s]
 	end
 
-	def status
-		@db[today]["status"] if @db[today]
+	def on
+		today["on"]
+	end
+
+	def turn_on
+		today["on"] = true
+	end
+
+	def turn_off
+		today["on"] = false
 	end
 end
