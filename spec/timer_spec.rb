@@ -27,13 +27,13 @@ describe Timer do
 		expect(@timer.is_on?).to eq(true)		
 	end
 
-	it 'should return string when report method is called' do
-		expect(@timer.report.instance_of?(String)).to eq(true)
+	it 'should return hash when report method is called' do
+		expect(@timer.report.instance_of?(Hash)).to eq(true)
 	end
 
 	it 'should save reports from the past days' do
 		write_data_file(sample_data_with_yesterday)
-		expect(@timer.report(-1).instance_of?(String)).to eq(true)
+		expect(@timer.report(-1).instance_of?(Hash)).to eq(true)
 	end
 
 	it 'should save start time' do
@@ -68,13 +68,13 @@ describe Timer do
 		@timer.add_task("buy apples")
 		@timer.add_task("write emails")
 		@timer.add_task("sleep")
-		expect(@timer.tasks).to eq("buy apples, write emails, sleep")
+		expect(@timer.report["tasks"]).to eq(["buy apples", "write emails", "sleep"])
 	end
 
 	it "should show past tasks" do
 		write_data_file(sample_data_with_yesterday)		
 		init_timer
-		expect(@timer.tasks(-1)).to eq("emails, meeting with the team")
+		expect(@timer.report(-1)["tasks"]).to eq(["emails", "meeting with the team"])
 	end
 
 	after(:each) do

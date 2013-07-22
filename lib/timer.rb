@@ -38,12 +38,10 @@ class Timer
 	end
 
 	def report(day_counter = 0)
-		elements = {
+		{
 			"total_elapsed_time" => total_elapsed_time(day_counter),
-			"tasks" => tasks(day_counter)}
-		text = ""
-		elements.each_pair { |key, value| text += "#{key}: #{value}\n" if value}
-		text
+			"tasks" => tasks(day_counter)
+		}		
 	end
 
 	def current_interval
@@ -67,15 +65,15 @@ class Timer
 		DateFormatter.parse_elapsed_time(total)
 	end
 
+	private	
 	def tasks(day_counter = 0)		
 		timestamp = today.to_i + day_counter * 24 * 60 * 60
 		day = @db[timestamp.to_s]
 		if day && day["tasks"]
-			day["tasks"].join(", ")
+			day["tasks"]
 		end
 	end
 
-	private	
 	def set_status(status)
 		@db[today] ||= {}
 		@db[today]["status"] = status
