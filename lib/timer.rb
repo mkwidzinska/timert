@@ -52,10 +52,7 @@ class Timer
 		day = day(day_counter)
 		total = 0
 		if day && day["intervals"]
-			day["intervals"].each do |interval|
-				diff = interval["stop"].to_i - interval["start"].to_i
-				total += diff if diff > 0
-			end		
+			day["intervals"].each { |i| total += interval_duration(i) }
 		end		
 		total
 	end
@@ -68,6 +65,11 @@ class Timer
 	def intervals(day_counter = 0)
 		day = day(day_counter)
 		day["intervals"] if day
+	end
+
+	def interval_duration(interval)
+		diff = interval["stop"].to_i - interval["start"].to_i
+		diff > 0 ? diff : 0
 	end
 
 	def add_start_time
