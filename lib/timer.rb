@@ -62,9 +62,7 @@ class Timer
 
 	def tasks(day_counter = 0)		
 		day = day(day_counter)
-		if day && day["tasks"]
-			day["tasks"]
-		end
+		day["tasks"] if day		
 	end
 
 	def intervals(day_counter = 0)
@@ -80,9 +78,7 @@ class Timer
 	end
 
 	def add_stop_time
-		time = time_now
-		today["intervals"].last["stop"] = time
-		time		
+		today["intervals"].last["stop"] = time_now		
 	end
 
 	def save
