@@ -58,13 +58,11 @@ class Timer
 	end
 
 	def tasks(day_counter = 0)		
-		day = day(day_counter)
-		day["tasks"] if day		
+		day(day_counter)["tasks"]		
 	end
 
 	def intervals(day_counter = 0)
-		day = day(day_counter)
-		day["intervals"] if day
+		day(day_counter)["intervals"]		
 	end
 
 	def interval_duration(interval)
@@ -104,7 +102,8 @@ class Timer
 	end
 
 	def day(day_counter = 0)
-		@db[(Date.today + day_counter).to_time.to_i.to_s]
+		d = @db[(Date.today + day_counter).to_time.to_i.to_s]
+		d ||= {}
 	end
 
 	def on
