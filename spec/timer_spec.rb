@@ -38,7 +38,7 @@ describe Timer do
 
 	it 'should save start time' do
 		time = @timer.start
-		expect(@timer.current_interval["start"]).to eq(time)
+		expect(@timer.report["intervals"].last["start"]).to eq(time)
 	end
 
 	it "should not start again if it's already started" do
@@ -49,7 +49,7 @@ describe Timer do
 	it 'should save stop time' do
 		@timer.start
 		time = @timer.stop
-		expect(@timer.current_interval["stop"]).to eq(time)
+		expect(@timer.report["intervals"].last["stop"]).to eq(time)
 	end
 
 	it 'should say how much time elapsed today' do

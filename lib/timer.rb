@@ -39,13 +39,9 @@ class Timer
 	def report(day_counter = 0)
 		{
 			"total_elapsed_time" => total_elapsed_time(day_counter),
-			"tasks" => tasks(day_counter)
+			"tasks" => tasks(day_counter),
+			"intervals" => intervals(day_counter)
 		}		
-	end
-
-	def current_interval
-		@db[today]["intervals"] ||= []
-		@db[today]["intervals"].last || {}
 	end
 
 	def is_on?
@@ -54,7 +50,7 @@ class Timer
 
 	private	
 	def total_elapsed_time(day_counter = 0)
-		day = @db[day_from_counter(day_counter)]
+		day = day(day_counter)
 		total = 0
 		if day && day["intervals"]
 			day["intervals"].each do |interval|
@@ -66,11 +62,15 @@ class Timer
 	end
 
 	def tasks(day_counter = 0)		
-		timestamp = today.to_i + day_counter * 24 * 60 * 60
-		day = @db[timestamp.to_s]
+		day = day(day_counter)
 		if day && day["tasks"]
 			day["tasks"]
 		end
+	end
+
+	def intervals(day_counter = 0)
+		day = day(day_counter)
+		day["intervals"] if day
 	end
 
 	def set_status(status)
@@ -104,8 +104,8 @@ class Timer
 		Time.now.to_i
 	end
 
-	def day_from_counter(day_counter)
-		(today.to_i + day_counter * 24 * 60 * 60).to_s
+	def day(day_counter = 0)
+		@db[(today.to_i + day_counter * 24 * 60 * 60).to_s]
 	end
 
 	def status
