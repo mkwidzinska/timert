@@ -1,6 +1,5 @@
 require 'json'
 require 'date'
-require_relative 'date_formatter'
 
 class Timer	
 	attr_reader :path
@@ -62,8 +61,8 @@ class Timer
 				diff = interval["stop"].to_i - interval["start"].to_i
 				total += diff if diff > 0
 			end		
-		end
-		DateFormatter.parse_elapsed_time(total)
+		end		
+		total
 	end
 
 	def tasks(day_counter = 0)		
