@@ -1,5 +1,5 @@
 require 'json'
-require 'date'
+require 'timecop'
 require_relative '../lib/timer'
 
 describe Timer do
@@ -19,8 +19,14 @@ describe Timer do
 	end
 
 	it 'should save reports from the past days' do
-		write_data_file(sample_data_with_yesterday)
+		Timecop.freeze(Time.new(2013, 6, 10, 14, 56))
+		@timer.start
+		Timecop.freeze(Time.new(2013, 6, 10, 16, 14))
+		@timer.stop
+		@timer.add_task("debugging")
+		Timecop.freeze(Time.new(2013, 6, 11, 16, 14))
 		expect(@timer.report(-1).instance_of?(Hash)).to eq(true)
+		Timecop.return
 	end
 
 	it 'should save start time' do
@@ -40,15 +46,25 @@ describe Timer do
 	end
 
 	it 'should say how much time elapsed today' do
-		write_data_file(sample_data_with_yesterday)
 		init_timer
+		t = Time.now
+		Timecop.freeze(Time.new(2013, 4, 10, 14, 20, 10))
+		@timer.start
+		Timecop.freeze(Time.new(2013, 4, 10, 17, 45, 23))
+		@timer.stop
 		expect(@timer.report["total_elapsed_time"]).to eq(3 * 60 * 60 + 25 * 60 + 13)
+		Timecop.return
 	end
 
 	it 'should say how much time elapsed in one of the past days' do
-		write_data_file(sample_data_with_yesterday)
 		init_timer
-		expect(@timer.report(-1)["total_elapsed_time"]).to eq(3 * 60 * 60 + 25 * 60 + 13)
+		Timecop.freeze(Time.new(2013, 4, 5, 13, 0, 0))
+		@timer.start
+		Timecop.freeze(Time.new(2013, 4, 5, 16, 25, 13))
+		@timer.stop
+		Timecop.freeze(Time.new(2013, 4, 10, 13))		
+		expect(@timer.report(-5)["total_elapsed_time"]).to eq(3 * 60 * 60 + 25 * 60 + 13)
+		Timecop.return
 	end
 
 	it "should show today's tasks" do
@@ -59,9 +75,13 @@ describe Timer do
 	end
 
 	it "should show past tasks" do
-		write_data_file(sample_data_with_yesterday)		
 		init_timer
+		Timecop.freeze(Time.new(2013, 5, 15, 15, 45))
+		@timer.add_task("emails")
+		@timer.add_task("meeting with the team")
+		Timecop.freeze(Time.new(2013, 5, 16, 10, 9))
 		expect(@timer.report(-1)["tasks"]).to eq(["emails", "meeting with the team"])
+		Timecop.return
 	end
 
 	after(:each) do
@@ -74,28 +94,5 @@ describe Timer do
 
 	def write_data_file(data)
 		File.open(@path, "w+") { |file| file.write(data.to_json) }
-	end
-
-	def today
-		Date.today.to_time.to_i.to_s
-	end
-
-	def yesterday
-		Time.at(Date.today.to_time.to_i - 60 * 60 * 24).to_i.to_s
-	end
-
-# Timecop
-	def sample_data_with_yesterday
-		stop = Time.now.to_i
-		start = stop - 3 * 60 * 60 - 25 * 60 - 13
-		{ 
-			today => { 
-				"intervals" => [{"start" => start, "stop" => stop }]
-			},
-			yesterday => { 
-				"tasks" => ["emails", "meeting with the team"],
-				"intervals" => [{"start" => start, "stop" => stop}]
-			}
-		}
-	end
+	end	
 end
