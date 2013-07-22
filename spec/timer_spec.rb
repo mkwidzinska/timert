@@ -50,9 +50,9 @@ describe Timer do
 		t = Time.now
 		Timecop.freeze(Time.new(2013, 4, 10, 14, 20, 10))
 		@timer.start
-		Timecop.freeze(Time.new(2013, 4, 10, 17, 45, 23))
+		Timecop.freeze(Time.new(2013, 4, 10, 17, 15, 16))
 		@timer.stop
-		expect(@timer.report["total_elapsed_time"]).to eq(3 * 60 * 60 + 25 * 60 + 13)
+		expect(@timer.report["total_elapsed_time"]).to eq(duration(2, 55, 6))
 		Timecop.return
 	end
 
@@ -63,7 +63,7 @@ describe Timer do
 		Timecop.freeze(Time.new(2013, 4, 5, 16, 25, 13))
 		@timer.stop
 		Timecop.freeze(Time.new(2013, 4, 10, 13))		
-		expect(@timer.report(-5)["total_elapsed_time"]).to eq(3 * 60 * 60 + 25 * 60 + 13)
+		expect(@timer.report(-5)["total_elapsed_time"]).to eq(duration(3, 25, 13))		
 		Timecop.return
 	end
 
@@ -95,4 +95,8 @@ describe Timer do
 	def write_data_file(data)
 		File.open(@path, "w+") { |file| file.write(data.to_json) }
 	end	
+
+	def duration(hours, minutes, seconds)
+		hours * 60 * 60 + minutes * 60 + seconds
+	end
 end
