@@ -104,7 +104,7 @@ class Timer
 	end
 
 	def day(day_counter = 0)
-		@db[(today_key.to_i + day_counter * 24 * 60 * 60).to_s]
+		@db[(Date.today + day_counter).to_time.to_i.to_s]
 	end
 
 	def on
