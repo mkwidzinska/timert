@@ -44,11 +44,11 @@ class Timer
 		}		
 	end
 
+	private	
 	def is_on?
 		status == 1
 	end
 
-	private	
 	def total_elapsed_time(day_counter = 0)
 		day = day(day_counter)
 		total = 0

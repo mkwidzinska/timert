@@ -13,20 +13,7 @@ describe Timer do
 	it 'should have access to a database file' do
 		expect(File.exists?(@timer.path)).to eq(true)
 	end
-
-	it "should know if it's on" do
-		@timer.start
-		expect(@timer.is_on?).to eq(true)
-	end
-#implmentation detail
-	it 'should preserve status between inits' do
-		@timer.start
-		init_timer
-		expect(@timer.is_on?).to eq(true)
-		init_timer
-		expect(@timer.is_on?).to eq(true)		
-	end
-
+	
 	it 'should return hash when report method is called' do
 		expect(@timer.report.instance_of?(Hash)).to eq(true)
 	end
