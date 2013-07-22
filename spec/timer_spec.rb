@@ -55,13 +55,13 @@ describe Timer do
 	it 'should say how much time elapsed today' do
 		write_data_file(sample_data_with_yesterday)
 		init_timer
-		expect(@timer.total_elapsed_time).to eq("3h 25min 13sec")
+		expect(@timer.report["total_elapsed_time"]).to eq("3h 25min 13sec")
 	end
 
 	it 'should say how much time elapsed in one of the past days' do
 		write_data_file(sample_data_with_yesterday)
 		init_timer
-		expect(@timer.total_elapsed_time(-1)).to eq("3h 25min 13sec")
+		expect(@timer.report(-1)["total_elapsed_time"]).to eq("3h 25min 13sec")
 	end
 
 	it "should show today's tasks" do

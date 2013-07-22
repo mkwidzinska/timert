@@ -53,6 +53,7 @@ class Timer
 		status == 1
 	end
 
+	private	
 	def total_elapsed_time(day_counter = 0)
 		day = @db[day_from_counter(day_counter)]
 		total = 0
@@ -65,7 +66,6 @@ class Timer
 		DateFormatter.parse_elapsed_time(total)
 	end
 
-	private	
 	def tasks(day_counter = 0)		
 		timestamp = today.to_i + day_counter * 24 * 60 * 60
 		day = @db[timestamp.to_s]
