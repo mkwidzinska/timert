@@ -6,13 +6,13 @@ class Timer
 
 	def initialize(path)
 		@path = path
-		File.open(@path, 'a+') { |file|
+		File.open(@path, 'a+') do |file|
 			@db = file.size > 0 ? JSON.load(file) : {}									
-		}
+		end
 	end
 
 	def start
-		if !is_on?
+		if !on?
 			turn_on
 			time = add_start_time
 			save
@@ -21,7 +21,7 @@ class Timer
 	end
 
 	def stop
-		if is_on?
+		if on?
 			turn_off
 			time = add_stop_time
 			save
@@ -36,33 +36,21 @@ class Timer
 	end
 
 	def report(day_counter = 0)
+		day = day(day_counter)
 		{
-			"total_elapsed_time" => total_elapsed_time(day_counter),
-			"tasks" => tasks(day_counter),
-			"intervals" => intervals(day_counter)
+			"total_elapsed_time" => total_elapsed_time(day),
+			"tasks" => day["tasks"],
+			"intervals" => day["intervals"]
 		}		
 	end
 
 	private	
-	def is_on?
-		on == true
-	end
-
-	def total_elapsed_time(day_counter = 0)
-		day = day(day_counter)
+	def total_elapsed_time(day)
 		total = 0
 		if day && day["intervals"]
 			day["intervals"].each { |i| total += interval_duration(i) }
 		end		
 		total
-	end
-
-	def tasks(day_counter = 0)		
-		day(day_counter)["tasks"]		
-	end
-
-	def intervals(day_counter = 0)
-		day(day_counter)["intervals"]		
 	end
 
 	def interval_duration(interval)
@@ -87,14 +75,10 @@ class Timer
 
 	def today
 		if !@today			
-			@db[today_key] ||= {}
-			@today = @db[today_key]
+			@db[key] ||= {}
+			@today = @db[key]
 		end
 		@today
-	end
-
-	def today_key
-		Date.today.to_time.to_i.to_s
 	end
 
 	def time_now
@@ -102,11 +86,14 @@ class Timer
 	end
 
 	def day(day_counter = 0)
-		d = @db[(Date.today + day_counter).to_time.to_i.to_s]
-		d ||= {}
+		@db[key(day_counter)] || {}
 	end
 
-	def on
+	def key(day_counter = 0)
+		(Date.today + day_counter).to_time.to_i.to_s
+	end
+
+	def on?
 		today["on"]
 	end
 
