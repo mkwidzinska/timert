@@ -67,6 +67,18 @@ describe Day do
 		expect {@day.on = true}.not_to raise_error
 	end
 
+	it 'should initialize with hash(:intervals, :tasks, :on)' do
+		@day = Day.new(
+			intervals: [{"start" => 124, "stop" => 1300}],
+			tasks: ["debugging", "emails"],
+			on: true
+		)
+		expect(@day.intervals.last["start"]).to eq(124)
+		expect(@day.intervals.last["stop"]).to eq(1300)
+		expect(@day.tasks).to eq(["debugging", "emails"])
+		expect(@day.on).to eq(true)
+	end
+
 	def duration(hours, minutes, seconds)
 		hours * 60 * 60 + minutes * 60 + seconds
 	end

@@ -3,9 +3,10 @@ class Day
 	attr_reader :intervals, :tasks
 	attr_accessor :on
 
-	def initialize
-		@intervals = []
-		@tasks = []
+	def initialize(args = {})		
+		@intervals = args[:intervals] || []
+		@tasks = args[:tasks] || []
+		@on = args[:on] || false		
 	end
 
 	def add_start(time)
