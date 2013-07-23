@@ -6,7 +6,7 @@ class Day
 	def initialize(args = {})		
 		@intervals = args[:intervals] || []
 		@tasks = args[:tasks] || []
-		@on = args[:on] || false		
+		@on = args[:on] || false				
 	end
 
 	def add_start(time)

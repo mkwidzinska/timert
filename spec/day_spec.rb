@@ -94,7 +94,6 @@ describe Day do
 
 		it "should have to_hash method that returns day's state" do
 			hash = @day.to_hash
-			puts hash
 			expect(hash["intervals"].last["start"]).to eq(124)
 			expect(hash["intervals"].last["stop"]).to eq(1300)
 			expect(hash["tasks"]).to eq(["debugging", "emails"])
