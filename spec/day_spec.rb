@@ -30,11 +30,20 @@ describe Day do
 	end
 
 	it "should not add start time when last interval hasn't been completed" do
-		time = Time.now
+		time = Time.now.to_i
 		@day.add_start(time)
 		expect(@day.intervals.length).to eq(1)
 		@day.add_start(time)
 		expect(@day.intervals.length).to eq(1)
+	end
+
+	it "should not add stop time when no interval is started" do
+		time = Time.now.to_i
+		@day.add_start(time)
+		@day.add_stop(time + 100)
+		@day.add_stop(time + 200)
+		expect(@day.intervals.length).to eq(1)
+		expect(@day.intervals.last["stop"]).to eq(time + 100)
 	end
 
 	it 'should have a method that returns total elapsed time' do
@@ -67,16 +76,41 @@ describe Day do
 		expect {@day.on = true}.not_to raise_error
 	end
 
-	it 'should initialize with hash(:intervals, :tasks, :on)' do
-		@day = Day.new(
-			intervals: [{"start" => 124, "stop" => 1300}],
-			tasks: ["debugging", "emails"],
-			on: true
-		)
-		expect(@day.intervals.last["start"]).to eq(124)
-		expect(@day.intervals.last["stop"]).to eq(1300)
-		expect(@day.tasks).to eq(["debugging", "emails"])
-		expect(@day.on).to eq(true)
+	context 'after initialized with hash data' do
+		before do
+			@day = Day.new(
+				intervals: [{"start" => 124, "stop" => 1300}],
+				tasks: ["debugging", "emails"],
+				on: true
+			)			
+		end
+
+		it 'should contain appropiate data' do
+			expect(@day.intervals.last["start"]).to eq(124)
+			expect(@day.intervals.last["stop"]).to eq(1300)
+			expect(@day.tasks).to eq(["debugging", "emails"])
+			expect(@day.on).to eq(true)
+		end
+
+		it "should have to_hash method that returns day's state" do
+			hash = @day.to_hash
+			puts hash
+			expect(hash["intervals"].last["start"]).to eq(124)
+			expect(hash["intervals"].last["stop"]).to eq(1300)
+			expect(hash["tasks"]).to eq(["debugging", "emails"])
+			expect(hash["on"]).to eq(true)
+		end
+	end
+
+	it "should return start time when it's added" do
+		time = Time.now.to_i
+		expect(@day.add_start(time)).to eq(time)
+	end
+
+	it "should return stop time when it's added" do
+		time = Time.now.to_i
+		@day.add_start(time - 100)
+		expect(@day.add_stop(time)).to eq(time)
 	end
 
 	def duration(hours, minutes, seconds)

@@ -1,5 +1,6 @@
 require 'json'
 require 'date'
+require_relative 'day'
 
 class Timer	
 	attr_reader :path
@@ -30,8 +31,7 @@ class Timer
 	end
 
 	def add_task(task)
-		today["tasks"] ||= []
-		today["tasks"].push(task)
+		today.add_task(task)
 		save
 	end
 
@@ -59,24 +59,22 @@ class Timer
 	end
 
 	def add_start_time
-		time = time_now
-		today["intervals"] ||= []
-		today["intervals"].push({"start" => time})
-		time
+		today.add_start(time_now)		
 	end
 
 	def add_stop_time
-		today["intervals"].last["stop"] = time_now		
+		today.add_stop(time_now)
 	end
 
 	def save
+		@db[key] = today.to_hash
 		File.open(@path, 'w+') { |f| f.write(@db.to_json) }		
 	end
 
 	def today
 		if !@today			
 			@db[key] ||= {}
-			@today = @db[key]
+			@today = Day.new(@db[key])
 		end
 		@today
 	end
@@ -94,14 +92,14 @@ class Timer
 	end
 
 	def on?
-		today["on"]
+		today.on
 	end
 
 	def turn_on
-		today["on"] = true
+		today.on = true
 	end
 
 	def turn_off
-		today["on"] = false
+		today.on = false
 	end
 end

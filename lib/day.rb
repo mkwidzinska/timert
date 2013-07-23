@@ -10,11 +10,17 @@ class Day
 	end
 
 	def add_start(time)
-		@intervals.push({"start" => time}) if is_last_interval_finished?
+		if !is_interval_started?
+			@intervals.push({"start" => time}) 
+			time
+		end
 	end
 
 	def add_stop(time)
-		@intervals.last["stop"] = time
+		if is_interval_started?
+			@intervals.last["stop"] = time 
+			time
+		end
 	end
 
 	def total_elapsed_time
@@ -27,10 +33,17 @@ class Day
 		@tasks.push(task)
 	end
 
+	def to_hash
+		{
+			"on" => @on,
+			"tasks" => @tasks,
+			"intervals" => @intervals
+		}
+	end
+
 	private 
-	def is_last_interval_finished?
-		@intervals.length == 0 || 
-		(@intervals.last["start"] && @intervals.last["stop"])
+	def is_interval_started?
+		@intervals.length > 0 && @intervals.last["start"] && !@intervals.last["stop"]
 	end
 
 	def interval_duration(interval)
