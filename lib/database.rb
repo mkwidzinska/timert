@@ -6,20 +6,23 @@ class Database
 		@path = path
 	end
 
-	def day(day_counter = 0) 
-		data = open
+	def today
+		day(0)
+	end
+
+	def day(day_counter = 0) 		
 		day_hash = data[key(day_counter)]
-		Day.new(intervals: day_hash["intervals"], tasks: day_hash["tasks"])
+		Day.new(intervals: day_hash["intervals"], tasks: day_hash["tasks"]) if day_hash
 	end
 	
-	def save_day(day, day_counter = 0)
-		data = open
-		data[key(day_counter)] = day.to_hash
-		save(data)
+	def save_today(day)
+		current_data = data
+		current_data[today_key] = day.to_hash
+		save(current_data)
 	end
 
 	private
-	def open
+	def data
 		File.open(@path, 'a+') do |file|
 			file.size > 0 ? JSON.load(file) : {}									
 		end
@@ -27,6 +30,10 @@ class Database
 
 	def save(hash)
 		File.open(@path, 'w+') { |f| f.write(hash.to_json) }		
+	end
+
+	def today_key
+		key(0)
 	end
 
 	def key(day_counter = 0)

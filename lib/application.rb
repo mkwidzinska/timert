@@ -1,41 +1,48 @@
 require_relative 'argument_parser'
 require_relative 'timer'
 require_relative 'date_formatter'
+require_relative 'database'
 
 class Application
   DATABASE_PATH = ENV["HOME"] + "/.timert"
 
 	def initialize(argv)
-    @timer = Timer.new(DATABASE_PATH)
+    @database = Database.new(DATABASE_PATH)    
+    @timer = Timer.new(@database.today)
     parser = ArgumentParser.new(argv)
     send(parser.action, parser.argument) if parser.action
 	end
 
   private
   def start(time = nil)
-    time = @timer.start # return time and flag
-    if time
-      puts "start timer at #{parse_hour(time)}"
+    result = @timer.start
+    if result["started"]
+      puts "start timer at #{parse_hour(result["time"])}"
+      @database.save_day(@timer.today)
     else
-      start = @timer.current_interval["start"]
-      puts "timer already started at #{parse_hour(start)}"
+      puts "timer already started at #{parse_hour(result["time"])}"
     end
   end
 
   def stop(time = nil)
-    time = @timer.stop
-    puts "stop timer at #{parse_hour(time)}"
+    result = @timer.stop
+    if result["stopped"]
+      puts "stop timer at #{parse_hour(result["time"])}"
+      @database.save_day(@timer.today)
+    else
+      puts "timer isn't started yet"
+    end
+
   end
 
-  def report(day_counter)
-    day_counter ||= 0
-    puts "REPORT FOR #{parse_relative_date(day_counter)}"
-    puts @timer.report(day_counter.to_i)
+  def report(day_counter = 0)
+    puts "REPORT FOR #{parse_relative_date(day_counter)}"    
   end
 
 	def add_task(task)    
     puts "added task: #{task}"
     @timer.add_task(task)
+    @database.save_day(@timer.today)
 	end
 
   def parse_hour(timestamp)

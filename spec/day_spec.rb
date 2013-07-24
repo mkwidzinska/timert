@@ -104,6 +104,12 @@ describe Day do
 		expect(first_day).to eq(second_day)
 	end
 
+	it 'should have a method that returns last start time' do
+		time = Time.now
+		@day.add_start(time)
+		expect(@day.last_start).to eq(time.to_i)
+	end
+
 	def duration(hours, minutes, seconds)
 		hours * 60 * 60 + minutes * 60 + seconds
 	end

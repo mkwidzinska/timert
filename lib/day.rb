@@ -49,6 +49,10 @@ class Day
 		other.to_hash == to_hash
 	end
 
+	def last_start
+		@intervals.last["start"].to_i if @intervals.length > 0
+	end
+
 	private 
 	def interval_duration(interval)
 		diff = interval["stop"].to_i - interval["start"].to_i
