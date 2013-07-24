@@ -4,10 +4,14 @@ class DateFormatter
 		Time.at(timestamp).to_s.split[1]
 	end
 
+	def self.parse_date(timestamp)
+		Time.at(timestamp).to_s.split[0]
+	end
+
 	def self.parse_relative_date(day_counter = 0, today = Time.new)
 		#today = today ? today : Time.new
 		passed_days = day_counter * 60 * 60 * 24
-		Time.at(today.to_i + passed_days).to_s.split[0]		
+		parse_date(today.to_i + passed_days)
 	end
 
 	def self.parse_elapsed_time(duration)

@@ -51,7 +51,6 @@ describe Report do
 	end
 
 	it 'should generate report for this month' do
-		puts Report.generate(database, "month")
 		expect(Report.generate(database, "month").instance_of?(String)).to eq(true)
 	end
 end

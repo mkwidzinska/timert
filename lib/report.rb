@@ -16,23 +16,47 @@ class Report
 
 	private
 	def self.report_for_week(database)
-		"week report"
+		today = Date.today
+		first = (today - today.cwday).to_time.to_i
+		last = (today + 7 - today.cwday - 1).to_time.to_i
+		"REPORT FOR THIS WEEK\n".blue +
+		report_for_range(Range.new(first, last), database)
 	end
 
 	def self.report_for_month(database)
-		"month report"
+		today = Date.today
+		first = Date.new(today.year, today.month, 1).to_time.to_i 
+		last = Date.new(today.year, today.month, -1).to_time.to_i 		
+		"REPORT FOR THIS MONTH\n".blue +
+		report_for_range(Range.new(first, last), database)
+	end
+
+	def self.report_for_range(range, database)
+		data = database.days(range)
+		
+		s = "\nDay/time elapsed\n".green
+		total_time = 0
+		
+		data.each do |d|
+			s += "#{parse_date(d["date"])}: #{parse_duration(d["day"].total_elapsed_time)}\n"
+			total_time += d["day"].total_elapsed_time
+		end
+		
+		s += "\nTotal:\n".green
+		s += parse_duration(total_time)
+		s
 	end
 
 	def self.report_for_day(database, day_counter = 0)
 		day = database.day(day_counter)
 		if day			
-			"REPORT FOR #{DateFormatter.parse_relative_date(day_counter)}:\n".blue + 
+			"REPORT FOR #{relative_date(day_counter)}:\n".blue + 
 			 "Tasks:\n".green + 
 			"#{format_tasks(day)}\n" + 
 			"\nWork time:\n".green + 
 			"#{format_intervals(day)}" + 
 			"\nTotal elapsed time:\n".green + 
-			"#{DateFormatter.parse_elapsed_time(day.total_elapsed_time)}\n" + 
+			"#{parse_duration(day.total_elapsed_time)}\n" + 
 			"\nSummary:\n".red + 
 			"#{DateFormatter.round_duration(day.total_elapsed_time)} #{format_tasks(day)}"
 		else
@@ -53,4 +77,16 @@ class Report
 		end
 		s
 	end	
+
+	def self.parse_date(timestamp)
+		DateFormatter.parse_date(timestamp)
+	end
+
+	def self.relative_date(day_counter)
+		DateFormatter.parse_relative_date(day_counter)
+	end
+
+	def self.parse_duration(duration)
+		DateFormatter.parse_elapsed_time(duration)
+	end
 end

@@ -12,7 +12,18 @@ class Database
 
 	def day(day_counter = 0) 		
 		day_hash = data[key(day_counter)]
-		Day.new(intervals: day_hash["intervals"], tasks: day_hash["tasks"]) if day_hash
+		hash_to_day(day_hash)
+	end
+
+	def days(range)
+		entries = data
+		result = []
+		entries.each_pair do |date, day_hash|
+			if range.include?(date.to_i)
+				result << {"date" => date.to_i, "day" => hash_to_day(day_hash)}
+			end
+		end
+		result
 	end
 	
 	def save_today(day)
@@ -38,5 +49,9 @@ class Database
 
 	def key(day_counter = 0)
 		(Date.today + day_counter).to_time.to_i.to_s
+	end
+
+	def hash_to_day(day_hash)
+		Day.new(intervals: day_hash["intervals"], tasks: day_hash["tasks"]) if day_hash
 	end
 end
