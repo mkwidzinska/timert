@@ -10,6 +10,9 @@ class Day
 
 	def add_start(time)
 		if !is_interval_started?
+			if time < last_start
+				raise ArgumentError.new("Invalid start time")
+			end
 			@intervals.push({"start" => time}) 
 			time
 		end

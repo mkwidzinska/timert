@@ -115,6 +115,13 @@ describe Day do
 		expect { @day.add_stop(time - 300) }.to raise_error(ArgumentError)
 	end
 
+	it 'should raise an ArgumentError if passed start time is lower than last start time' do
+		time = Time.now.to_i
+		@day.add_start(time)		
+		@day.add_stop(time + 600)
+		expect { @day.add_start(time - 500) }.to raise_error(ArgumentError)
+	end
+
 	def duration(hours, minutes, seconds)
 		hours * 60 * 60 + minutes * 60 + seconds
 	end
