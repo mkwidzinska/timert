@@ -17,23 +17,31 @@ class Application
 
   private
   def start(time = nil)
-    timer_result = @timer.start(time)
-    if timer_result["started"]
-      @result["message"] = "start timer at #{parse_hour(timer_result["time"])}"
-      @database.save_today(@timer.today)
-    else
-      @result["message"] = "timer already started at #{parse_hour(timer_result["time"])}"
-    end    
+    begin
+      timer_result = @timer.start(time)
+      if timer_result["started"]
+        @result["message"] = "start timer at #{parse_hour(timer_result["time"])}"
+        @database.save_today(@timer.today)
+      else
+        @result["message"] = "timer already started at #{parse_hour(timer_result["time"])}"
+      end    
+    rescue ArgumentError
+      @result["message"] = "Invalid time"
+    end
   end
 
   def stop(time = nil)
-    timer_result = @timer.stop(time)
-    if timer_result["stopped"]      
-      @result["message"] = "stop timer at #{parse_hour(timer_result["time"])}"
-      @database.save_today(@timer.today)
-    else
-      @result["message"] = "timer isn't started yet"
-    end    
+    begin
+      timer_result = @timer.stop(time)
+      if timer_result["stopped"]      
+        @result["message"] = "stop timer at #{parse_hour(timer_result["time"])}"
+        @database.save_today(@timer.today)
+      else
+        @result["message"] = "timer isn't started yet"
+      end    
+    rescue ArgumentError
+      @result["message"] = "Invalid time"
+    end
   end
 
   def report(day_counter = 0)

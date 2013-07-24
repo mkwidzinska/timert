@@ -70,6 +70,15 @@ describe Application do
 				expect(database.today.last_stop).to eq(Time.now.to_i - 60)
 			end
 		end
+
+		context 'and then initialized with stop and invalid time argument' do
+			it 'should not raise an error' do
+				Timecop.freeze(2013, 6, 12, 15, 00) do
+					Application.new(["stop", "9"], path)
+					expect { Application.new(["stop", "9"], path) }.to_not raise_error
+				end
+			end
+		end
 	end
 
 	context 'when initialized with start and time argument' do
@@ -84,6 +93,23 @@ describe Application do
 
 		it 'should start with given time' do
 			expect(database.today.last_start).to eq(Time.now.to_i - 60)
+		end		
+	end
+
+	context 'when initialized with start and invalid time argument' do
+		before do 
+			Timecop.freeze(Time.new(2013, 1, 10, 15)) do
+				Application.new(["start"], path)
+			end
+			Timecop.freeze(Time.new(2013, 1, 10, 16)) do
+				Application.new(["stop"], path)
+			end
+		end		
+
+		it 'should not raise an error' do
+			Timecop.freeze(2013, 1, 10, 17, 00) do
+				expect { Application.new(["start", "9"], path) }.to_not raise_error
+			end
 		end
 	end
 
