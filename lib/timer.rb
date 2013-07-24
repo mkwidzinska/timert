@@ -9,18 +9,20 @@ class Timer
 		@today = today || Day.new
 	end
 
-	def start
+	def start(time = nil)
+		time ||= time_now
 		if !on?
 			started = true
-			today.add_start(time_now)					
+			today.add_start(time)					
 		end
 		{"time" => today.last_start, "started" => started || false}
 	end
 
-	def stop
+	def stop(time = nil)
+		time ||= time_now
 		if on?
 			stopped = true
-			time = today.add_stop(time_now)			
+			time = today.add_stop(time)			
 		end
 		{"time" => time || 0, "stopped" => stopped || false}
 	end

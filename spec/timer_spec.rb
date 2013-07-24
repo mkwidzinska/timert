@@ -23,7 +23,7 @@ describe Timer do
 			expect(@timer.stop["time"]).to eq(Time.now.to_i)
 		end
 	end
-	
+
 	context 'while running' do
 		before do
 			@timer.start
@@ -43,4 +43,15 @@ describe Timer do
 			expect(@timer.stop["stopped"]).to eq(true)
 		end
 	end	
+
+	it 'should be able to start with given time' do
+		time = Time.now.to_i
+		expect(@timer.start(time)["time"]).to eq(time)
+	end
+
+	it 'should be able to stop with given time' do
+		@timer.start
+		time = Time.now.to_i + 500
+		expect(@timer.stop(time)["time"]).to eq(time)
+	end
 end

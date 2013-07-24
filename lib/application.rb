@@ -17,7 +17,7 @@ class Application
 
   private
   def start(time = nil)
-    timer_result = @timer.start
+    timer_result = @timer.start(time)
     if timer_result["started"]
       @result["message"] = "start timer at #{parse_hour(timer_result["time"])}"
       @database.save_today(@timer.today)
@@ -27,7 +27,7 @@ class Application
   end
 
   def stop(time = nil)
-    timer_result = @timer.stop
+    timer_result = @timer.stop(time)
     if timer_result["stopped"]      
       @result["message"] = "stop timer at #{parse_hour(timer_result["time"])}"
       @database.save_today(@timer.today)

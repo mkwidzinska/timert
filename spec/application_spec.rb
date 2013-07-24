@@ -55,8 +55,37 @@ describe Application do
 				expect(@app.result["message"].instance_of?(String)).to eq(true)
 			end
 		end
+
+		context 'and then initialized with stop and time argument' do
+			before do
+				Timecop.freeze(2013, 6, 12, 16, 00)
+				@app = Application.new(["stop", "15:59"], path)
+			end
+
+			after do
+				Timecop.return
+			end
+
+			it 'should stop with given time' do
+				expect(database.today.last_stop).to eq(Time.now.to_i - 60)
+			end
+		end
 	end
 
+	context 'when initialized with start and time argument' do
+		before do
+			Timecop.freeze(2013, 3, 20, 16, 00)
+			@app = Application.new(["start", "15:59"], path)
+		end
+
+		after do
+			Timecop.return
+		end
+
+		it 'should start with given time' do
+			expect(database.today.last_start).to eq(Time.now.to_i - 60)
+		end
+	end
 
 	context 'when initialized with report argument' do
 		before do
