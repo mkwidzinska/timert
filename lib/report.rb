@@ -54,7 +54,7 @@ class Report
 		day = database.day(day_counter)
 		if day			
 			"REPORT FOR #{relative_date(day_counter)}:\n".blue + 
-			 "Tasks:\n".green + 
+			"\nTasks:\n".green + 
 			"#{format_tasks(day)}\n" + 
 			"\nWork time:\n".green + 
 			"#{format_intervals(day)}" + 
