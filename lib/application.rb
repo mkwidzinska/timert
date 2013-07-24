@@ -2,6 +2,7 @@ require_relative 'argument_parser'
 require_relative 'timer'
 require_relative 'date_formatter'
 require_relative 'database'
+require_relative 'report'
 
 class Application
   attr_reader :result
@@ -45,13 +46,7 @@ class Application
   end
 
   def report(day_counter = 0)
-    day = @database.day(day_counter.to_i)
-    @result["message"] = if day
-      "REPORT FOR #{parse_relative_date(day_counter)}\n" +
-        DateFormatter.parse_elapsed_time(day.total_elapsed_time)      
-    else
-      "No data."
-    end
+    @result["message"] = Report.generate(@database, day_counter.to_i)    
   end
 
 	def add_task(task)    

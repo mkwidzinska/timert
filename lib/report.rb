@@ -1,6 +1,6 @@
 require 'colorize'
 require 'date'
-require 'date_formatter'
+require_relative 'date_formatter'
 
 class Report
 	
@@ -8,13 +8,13 @@ class Report
 		day = database.day(day_counter)
 		if day			
 			"REPORT FOR #{DateFormatter.parse_relative_date(day_counter)}:\n".blue + 
-			"Tasks:\n".green + 
+			 "Tasks:\n".green + 
 			"#{format_tasks(day)}\n" + 
-			"Work time:\n".green + 
+			"\nWork time:\n".green + 
 			"#{format_intervals(day)}" + 
-			"Total elapsed time:\n".green + 
+			"\nTotal elapsed time:\n".green + 
 			"#{DateFormatter.parse_elapsed_time(day.total_elapsed_time)}\n" + 
-			"Summary:\n".red + 
+			"\nSummary:\n".red + 
 			"#{DateFormatter.round_duration(day.total_elapsed_time)} #{format_tasks(day)}"
 		else
 			"No data"		
@@ -23,7 +23,7 @@ class Report
 
 	private
 	def self.format_tasks(day)
-		day.tasks.join(", ")
+		day.tasks.length > 0 ? day.tasks.join(", ") : "-"
 	end
 
 	def self.format_intervals(day)
