@@ -9,7 +9,6 @@ class DateFormatter
 	end
 
 	def self.parse_relative_date(day_counter = 0, today = Time.new)
-		#today = today ? today : Time.new
 		passed_days = day_counter * 60 * 60 * 24
 		parse_date(today.to_i + passed_days)
 	end
