@@ -46,14 +46,6 @@ describe Day do
 		expect(@day.total_elapsed_time).to eq(duration(3, 22, 31))
 	end
 
-	it 'should ignore intervals with stop time < start time' do
-		@day.add_start(Time.new(2013, 6, 10, 12, 34).to_i)
-		@day.add_stop(Time.new(2013, 6, 10, 11, 51, 10).to_i)
-		@day.add_start(Time.new(2013, 6, 10, 16, 10, 20).to_i)
-		@day.add_stop(Time.new(2013, 6, 10, 17, 15, 41).to_i)		
-		expect(@day.total_elapsed_time).to eq(duration(1, 5, 21))
-	end
-
 	it 'should have task method that returns an array' do
 		expect(@day.tasks.instance_of?(Array)).to eq(true)		
 	end
@@ -115,6 +107,12 @@ describe Day do
 		@day.add_start(time - 500)
 		@day.add_stop(time)
 		expect(@day.last_stop).to eq(time)
+	end
+
+	it 'should raise an ArgumentError if passed stop time is lower than last start time' do
+		time = Time.now.to_i
+		@day.add_start(time)		
+		expect { @day.add_stop(time - 300) }.to raise_error(ArgumentError)
 	end
 
 	def duration(hours, minutes, seconds)

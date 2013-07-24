@@ -16,7 +16,10 @@ class Day
 	end
 
 	def add_stop(time)
-		if is_interval_started?
+		if is_interval_started?			
+			if time < last_start
+				raise ArgumentError.new("Invalid stop time")
+			end
 			@intervals.last["stop"] = time 
 			time
 		end
@@ -59,8 +62,7 @@ class Day
 
 	private 
 	def interval_duration(interval)
-		diff = interval["stop"].to_i - interval["start"].to_i
-		diff > 0 ? diff : 0
+		interval["stop"].to_i - interval["start"].to_i		
 	end
 
 	def last_interval
