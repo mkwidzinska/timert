@@ -14,7 +14,6 @@ class Timer
 
 	def start
 		if !on?
-			turn_on
 			time = today.add_start(time_now)		
 			save
 			time		
@@ -23,7 +22,6 @@ class Timer
 
 	def stop
 		if on?
-			turn_off
 			time = today.add_stop(time_now)
 			save
 			time
@@ -71,14 +69,6 @@ class Timer
 	end
 
 	def on?
-		today.on
-	end
-
-	def turn_on
-		today.on = true
-	end
-
-	def turn_off
-		today.on = false
-	end
+		today.is_interval_started?
+	end	
 end

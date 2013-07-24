@@ -64,31 +64,24 @@ describe Day do
 		expect(@day.tasks).to eq(["watching youtube", "walking the dog"])
 	end
 
-	it 'should have on method that is writeable' do
-		expect {@day.on = true}.not_to raise_error
-	end
-
 	context 'after initialized with hash data' do
 		before do
 			@day = Day.new(
 				intervals: [{"start" => 124, "stop" => 1300}],
-				tasks: ["debugging", "emails"],
-				on: true
+				tasks: ["debugging", "emails"]
 			)			
 		end
 
 		it 'should contain appropiate data' do
 			expect(@day.intervals.last["start"]).to eq(124)
 			expect(@day.intervals.last["stop"]).to eq(1300)
-			expect(@day.tasks).to eq(["debugging", "emails"])
-			expect(@day.on).to eq(true)
+			expect(@day.tasks).to eq(["debugging", "emails"])			
 		end
 
 		it "should have to_hash method that returns day's state" do
 			hash = {
 				"intervals" => [{"start" => 124, "stop" => 1300}],
-				"tasks" => ["debugging", "emails"],
-				"on" => true
+				"tasks" => ["debugging", "emails"]				
 			}
 			expect(@day.to_hash).to eq(hash)			
 		end

@@ -5,8 +5,7 @@ class Day
 
 	def initialize(args = {})		
 		@intervals = args[:intervals] || []
-		@tasks = args[:tasks] || []
-		@on = args[:on] || false				
+		@tasks = args[:tasks] || []		
 	end
 
 	def add_start(time)
@@ -35,19 +34,18 @@ class Day
 
 	def to_hash
 		{
-			"on" => @on,
 			"tasks" => @tasks,
 			"intervals" => @intervals
 		}
 	end
 
-	private 
 	def is_interval_started?
 		@intervals.length > 0 && 
 			@intervals.last["start"] && 
 			!@intervals.last["stop"]
 	end
 
+	private 
 	def interval_duration(interval)
 		diff = interval["stop"].to_i - interval["start"].to_i
 		diff > 0 ? diff : 0
