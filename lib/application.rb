@@ -45,8 +45,8 @@ class Application
     end
   end
 
-  def report(day_counter = 0)
-    @result["message"] = Report.generate(@database, day_counter.to_i)    
+  def report(time_expression)
+    @result["message"] = Report.generate(@database, time_expression)    
   end
 
 	def add_task(task)    

@@ -4,7 +4,26 @@ require_relative 'date_formatter'
 
 class Report
 	
-	def self.generate(database, day_counter = 0)
+	def self.generate(database, time_expression = "")
+		if time_expression == "month"
+			report_for_month(database)
+		elsif time_expression == "week"
+			report_for_week(database)
+		else 
+			report_for_day(database, time_expression.to_i)
+		end
+	end
+
+	private
+	def self.report_for_week(database)
+		"week report"
+	end
+
+	def self.report_for_month(database)
+		"month report"
+	end
+
+	def self.report_for_day(database, day_counter = 0)
 		day = database.day(day_counter)
 		if day			
 			"REPORT FOR #{DateFormatter.parse_relative_date(day_counter)}:\n".blue + 
@@ -21,7 +40,6 @@ class Report
 		end
 	end
 
-	private
 	def self.format_tasks(day)
 		day.tasks.length > 0 ? day.tasks.join(", ") : "-"
 	end
