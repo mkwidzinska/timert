@@ -10,7 +10,7 @@ class Application
     @database = Database.new(db_path)    
     @timer = Timer.new(@database.today)
     @result = {}
-    
+
     parser = ArgumentParser.new(argv)
     send(parser.action, parser.argument) if parser.action
   end
@@ -41,9 +41,9 @@ class Application
   end
 
 	def add_task(task)    
-    puts "added task: #{task}"
+    @result["message"] = "added task: #{task}"
     @timer.add_task(task)
-    @database.save_day(@timer.today)
+    @database.save_today(@timer.today)
 	end
 
   def parse_hour(timestamp)

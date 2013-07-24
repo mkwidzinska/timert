@@ -34,7 +34,7 @@ describe Application do
 		end
 
 		it 'should have a method that returns hash result' do
-			expect(@app.result.instance_of?(Hash)).to eq(true)
+			expect(@app.result["message"].instance_of?(String)).to eq(true)
 		end
 
 		context 'and then initialized with stop argument' do
@@ -52,10 +52,11 @@ describe Application do
 			end
 
 			it 'should have a method that returns hash result' do
-				expect(@app.result.instance_of?(Hash)).to eq(true)
+				expect(@app.result["message"].instance_of?(String)).to eq(true)
 			end
 		end
 	end
+
 
 	context 'when initialized with report argument' do
 		before do
@@ -63,7 +64,31 @@ describe Application do
 		end
 
 		it 'should have a method that returns hash result' do
-			expect(@app.result.instance_of?(Hash)).to eq(true)
+			expect(@app.result["message"].instance_of?(String)).to eq(true)
+		end
+	end
+
+	context 'when initialized with argument other than start, stop or report' do
+		before do
+			@app = Application.new(["testing the new app"], path)			
+		end
+
+		it 'should add task' do
+			expect(database.today.tasks).to eq(["testing the new app"])
+		end
+
+		context 'and then initialized with argument that fullfills the same requirements' do
+			before do
+				@app = Application.new(["writing emails"], path)
+			end			
+
+			it 'should add another task' do
+				expect(database.today.tasks).to eq(["testing the new app", "writing emails"])
+			end
+		end
+
+		it 'should have a method that returns hash result' do
+			expect(@app.result["message"].instance_of?(String)).to eq(true)
 		end
 	end
 end
