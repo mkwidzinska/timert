@@ -25,8 +25,8 @@ class Application
       else
         @result["message"] = "timer already started at #{parse_hour(timer_result["time"])}"
       end    
-    rescue ArgumentError
-      @result["message"] = "Invalid time"
+    rescue ArgumentError => e
+      @result["message"] = e.message
     end
   end
 

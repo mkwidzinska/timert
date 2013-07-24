@@ -30,9 +30,11 @@ describe Timer do
 		end
 
 		it "should not start again until it's stopped" do
-			expect(@timer.start["started"]).to eq(false)
+			time = Time.now.to_i
+			expect(@timer.start(time)["started"]).to eq(false)
+			expect(@timer.start(time + 10)["started"]).to eq(false)
 			@timer.stop
-			expect(@timer.start["started"]).to eq(true)
+			expect(@timer.start(time + 10)["started"]).to eq(true)
 		end		
 	end	
 
