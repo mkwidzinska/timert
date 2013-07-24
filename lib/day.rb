@@ -45,6 +45,10 @@ class Day
 			!@intervals.last["stop"]
 	end
 
+	def ==(other)
+		other.to_hash == to_hash
+	end
+
 	private 
 	def interval_duration(interval)
 		diff = interval["stop"].to_i - interval["start"].to_i

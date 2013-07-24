@@ -98,6 +98,12 @@ describe Day do
 		expect(@day.add_stop(time)).to eq(time)
 	end
 
+	it 'should be equal to other day with the same data' do
+		first_day = Day.new(tasks: ["emails"])
+		second_day = Day.new(tasks: ["emails"])
+		expect(first_day).to eq(second_day)
+	end
+
 	def duration(hours, minutes, seconds)
 		hours * 60 * 60 + minutes * 60 + seconds
 	end
