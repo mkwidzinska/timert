@@ -32,4 +32,13 @@ describe DateFormatter do
 		time = 15 * 60 * 60 + 56
 		expect(DateFormatter.parse_elapsed_time(time)).to eq("15h 0min 56sec")		
 	end
+
+	it 'should have a method that returns rounded, decimal duration' do
+		d = duration(5, 13, 12)
+		expect(DateFormatter.round_duration(d)).to eq("5.5")
+	end
+
+	def duration(hours, minutes, seconds)
+		hours * 60 * 60 + minutes * 60 + seconds
+	end
 end

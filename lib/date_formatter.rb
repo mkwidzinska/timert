@@ -11,9 +11,31 @@ class DateFormatter
 	end
 
 	def self.parse_elapsed_time(duration)
-		hours = duration / 3600
-		minutes = (duration % 3600) / 60
-		seconds = duration % 60
-		"#{hours}h #{minutes}min #{seconds}sec"
+		"#{hours(duration)}h #{minutes(duration)}min #{seconds(duration)}sec"
+	end
+
+	def self.round_duration(duration)
+		hours = hours(duration)
+		part = (minutes(duration) / 60.0) * 10
+		if part > 5
+			hours += 1
+			part = 0
+		elsif part < 5 && part > 0
+			part = 5
+		end
+		part == 0 ? hours.to_s : "#{hours}.#{part}"
+	end
+
+	private
+	def self.hours(duration)
+		duration / 3600
+	end
+
+	def self.minutes(duration)
+		(duration % 3600) / 60
+	end
+
+	def self.seconds(duration)
+		duration % 60
 	end
 end

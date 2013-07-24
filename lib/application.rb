@@ -39,8 +39,8 @@ class Application
       else
         @result["message"] = "timer isn't started yet"
       end    
-    rescue ArgumentError
-      @result["message"] = "Invalid time"
+    rescue ArgumentError => e
+      @result["message"] = e.message
     end
   end
 
