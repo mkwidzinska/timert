@@ -5,14 +5,6 @@ describe Day do
 		@day = Day.new
 	end
 	
-	it 'should have method for adding start time' do
-		expect(@day.respond_to?(:add_start)).to eq(true)
-	end
-
-	it 'should have method for adding stop time' do
-		expect(@day.respond_to?(:add_stop)).to eq(true)
-	end
-
 	it 'should have method intervals that returns array' do
 		expect(@day.intervals.instance_of?(Array)).to eq(true)
 	end
@@ -93,11 +85,12 @@ describe Day do
 		end
 
 		it "should have to_hash method that returns day's state" do
-			hash = @day.to_hash
-			expect(hash["intervals"].last["start"]).to eq(124)
-			expect(hash["intervals"].last["stop"]).to eq(1300)
-			expect(hash["tasks"]).to eq(["debugging", "emails"])
-			expect(hash["on"]).to eq(true)
+			hash = {
+				"intervals" => [{"start" => 124, "stop" => 1300}],
+				"tasks" => ["debugging", "emails"],
+				"on" => true
+			}
+			expect(@day.to_hash).to eq(hash)			
 		end
 	end
 

@@ -43,7 +43,9 @@ class Day
 
 	private 
 	def is_interval_started?
-		@intervals.length > 0 && @intervals.last["start"] && !@intervals.last["stop"]
+		@intervals.length > 0 && 
+			@intervals.last["start"] && 
+			!@intervals.last["stop"]
 	end
 
 	def interval_duration(interval)
