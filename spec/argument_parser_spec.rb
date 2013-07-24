@@ -1,3 +1,4 @@
+require 'timecop'
 require_relative '../lib/argument_parser'
 
 describe ArgumentParser do
@@ -13,8 +14,12 @@ describe ArgumentParser do
     expect(ap_with_start.action).to eq('start')
   end
 
-  it 'should have argument method' do
-    expect(ap_with_start_at.argument).to eq('16:50')
+  context 'when second argument is passed to a time-associated method' do
+    it 'should have argument method that returns numeric representation of that time' do
+      Timecop.freeze(Time.new(2013, 4, 6, 16, 50)) do
+        expect(ap_with_start_at.argument).to eq(Time.now.to_i)
+      end
+    end
   end
 
   it 'should have argument equal to nil if one-element array is passed' do
