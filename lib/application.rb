@@ -4,39 +4,40 @@ require_relative 'date_formatter'
 require_relative 'database'
 
 class Application
-  DATABASE_PATH = ENV["HOME"] + "/.timert"
+  attr_reader :result
 
-	def initialize(argv)
-    @database = Database.new(DATABASE_PATH)    
+  def initialize(argv, db_path)
+    @database = Database.new(db_path)    
     @timer = Timer.new(@database.today)
+    @result = {}
+    
     parser = ArgumentParser.new(argv)
     send(parser.action, parser.argument) if parser.action
-	end
+  end
 
   private
   def start(time = nil)
-    result = @timer.start
-    if result["started"]
-      puts "start timer at #{parse_hour(result["time"])}"
-      @database.save_day(@timer.today)
+    timer_result = @timer.start
+    if timer_result["started"]
+      @result["message"] = "start timer at #{parse_hour(timer_result["time"])}"
+      @database.save_today(@timer.today)
     else
-      puts "timer already started at #{parse_hour(result["time"])}"
-    end
+      @result["message"] = "timer already started at #{parse_hour(timer_result["time"])}"
+    end    
   end
 
   def stop(time = nil)
-    result = @timer.stop
-    if result["stopped"]
-      puts "stop timer at #{parse_hour(result["time"])}"
-      @database.save_day(@timer.today)
+    timer_result = @timer.stop
+    if timer_result["stopped"]      
+      @result["message"] = "stop timer at #{parse_hour(timer_result["time"])}"
+      @database.save_today(@timer.today)
     else
-      puts "timer isn't started yet"
-    end
-
+      @result["message"] = "timer isn't started yet"
+    end    
   end
 
   def report(day_counter = 0)
-    puts "REPORT FOR #{parse_relative_date(day_counter)}"    
+    @message = "REPORT FOR #{parse_relative_date(day_counter)}"    
   end
 
 	def add_task(task)    

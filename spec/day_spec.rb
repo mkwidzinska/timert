@@ -105,9 +105,16 @@ describe Day do
 	end
 
 	it 'should have a method that returns last start time' do
-		time = Time.now
+		time = Time.now.to_i
 		@day.add_start(time)
-		expect(@day.last_start).to eq(time.to_i)
+		expect(@day.last_start).to eq(time)
+	end
+
+	it 'should have a method that returns last stop time' do
+		time = Time.now.to_i
+		@day.add_start(time - 500)
+		@day.add_stop(time)
+		expect(@day.last_stop).to eq(time)
 	end
 
 	def duration(hours, minutes, seconds)

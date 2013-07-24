@@ -50,12 +50,20 @@ class Day
 	end
 
 	def last_start
-		@intervals.last["start"].to_i if @intervals.length > 0
+		last_interval['start'].to_i
+	end	
+
+	def last_stop
+		last_interval['stop'].to_i
 	end
 
 	private 
 	def interval_duration(interval)
 		diff = interval["stop"].to_i - interval["start"].to_i
 		diff > 0 ? diff : 0
+	end
+
+	def last_interval
+		@intervals.length > 0 ? @intervals.last : {}
 	end
 end

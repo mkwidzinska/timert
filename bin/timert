@@ -2,4 +2,7 @@
 
 require_relative "../lib/application"
 
-Application.new(ARGV)
+DATABASE_PATH = ENV["HOME"] + "/.timert"
+	
+app = Application.new(ARGV, DATABASE_PATH)
+puts app.result["message"]
