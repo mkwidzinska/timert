@@ -45,7 +45,13 @@ class Application
   end
 
   def report(day_counter = 0)
-    @message = "REPORT FOR #{parse_relative_date(day_counter)}"    
+    day = @database.day(day_counter.to_i)
+    @result["message"] = if day
+      "REPORT FOR #{parse_relative_date(day_counter)}\n" +
+        DateFormatter.parse_elapsed_time(day.total_elapsed_time)      
+    else
+      "No data."
+    end
   end
 
 	def add_task(task)    
