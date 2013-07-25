@@ -22,13 +22,15 @@ class DateFormatter
   def self.round_duration(duration)
     hours = hours(duration)
     part = (minutes(duration) / 60.0) * 10
-    if part > 5
+    second_half = Range.new(5, 10)
+
+    if second_half.include?(part)
       hours += 1
       part = 0
-    elsif part < 5 && part > 0
+    else
       part = 5
     end
-    part == 0 ? hours.to_s : "#{hours}.#{part}"
+    part.zero? ? hours.to_s : "#{hours}.#{part}"
   end
 
   private
