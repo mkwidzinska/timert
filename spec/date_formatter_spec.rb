@@ -10,7 +10,7 @@ describe DateFormatter do
     today = Time.now
     expect(DateFormatter.parse_relative_date).to eq(today.to_s.split[0])
   end
-  #rozdzielic
+  
   it 'should return relative formatted date' do
     time = Time.new(2013, 4, 14, 4)
     yesterday = DateFormatter.parse_relative_date(-10, time)
@@ -18,11 +18,15 @@ describe DateFormatter do
 
     time = Time.new(2013, 4, 1, 4)
     yesterday = DateFormatter.parse_relative_date(-1, time)
-    expect(yesterday).to eq("2013-03-31")
+    expect(yesterday).to eq("2013-03-31")    
+  end
 
-    time = Time.new(2013, 4, 1)
-    yesterday = DateFormatter.parse_relative_date(-1, time)
-    expect(yesterday).to eq("2013-03-31")
+  context 'when a midnight hour is passed' do
+    it "should have a method that returns yesterday's date" do
+      time = Time.new(2013, 4, 1)
+      yesterday = DateFormatter.parse_relative_date(-1, time)
+      expect(yesterday).to eq("2013-03-31")
+    end
   end
 
   it 'should return formatted total elapsed time' do

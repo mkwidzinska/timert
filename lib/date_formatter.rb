@@ -1,3 +1,5 @@
+require 'date'
+
 class DateFormatter
   
   def self.parse_hour(timestamp)
@@ -9,8 +11,8 @@ class DateFormatter
   end
 
   def self.parse_relative_date(day_counter = 0, today = Time.new)
-    passed_days = day_counter * 60 * 60 * 24
-    parse_date(today.to_i + passed_days)
+    today_date = Date.new(today.year, today.month, today.day)
+    parse_date((today_date + day_counter).to_time.to_i)    
   end
 
   def self.parse_elapsed_time(duration)
