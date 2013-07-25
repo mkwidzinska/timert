@@ -147,7 +147,7 @@ describe Day do
     time = now
     @day.add_start(time)
     @day.add_stop(time + 1000)
-    expect { @day.add_start(time + 1000) }.not_to raise_error(ArgumentError)
+    expect { @day.add_start(time + 1000) }.not_to raise_error()
   end
 
   def duration(hours, minutes, seconds)
