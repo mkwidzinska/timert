@@ -61,7 +61,7 @@ class Report
       "\nTotal elapsed time:\n".green + 
       "#{parse_duration(day.total_elapsed_time)}\n" + 
       "\nSummary:\n".red + 
-      "#{DateFormatter.round_duration(day.total_elapsed_time)} #{format_tasks(day)}"
+      "#{round_duration(day.total_elapsed_time)} #{format_tasks(day)}"
     else
       "No data"    
     end
@@ -91,5 +91,9 @@ class Report
 
   def self.parse_duration(duration)
     DateFormatter.parse_elapsed_time(duration)
+  end
+
+  def self.round_duration(duration)
+    DateFormatter.round_duration(duration)
   end
 end
