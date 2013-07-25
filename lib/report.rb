@@ -38,11 +38,11 @@ class Report
     total_time = 0
     
     data.each do |d|
-      day = d["day"]
-      s += "#{parse_date(d["date"])}: ".yellow + 
+      date, day = d["date"], d["day"]
+      s += "#{parse_date(date)}: ".yellow + 
         "#{parse_duration(day.total_elapsed_time)} " +
         "(#{format_tasks(day)})\n"
-      total_time += d["day"].total_elapsed_time
+      total_time += day.total_elapsed_time
     end
     
     s += "\nTotal:\n".green
