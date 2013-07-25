@@ -10,9 +10,8 @@ class Database
     day(0)
   end
 
-  def day(day_counter = 0)
-    day_hash = data[key(day_counter)]
-    hash_to_day(day_hash)
+  def day(day_counter = 0)    
+    hash_to_day(data[key(day_counter)])
   end
 
   def days(range)
