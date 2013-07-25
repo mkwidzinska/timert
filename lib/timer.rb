@@ -10,21 +10,19 @@ class Timer
   end
 
   def start(time = nil)
-    time ||= time_now
     if !on?
       started = true
-      today.add_start(time)          
+      today.add_start(time || now)          
     end
     {"time" => today.last_start, "started" => started || false}
   end
 
   def stop(time = nil)
-    time ||= time_now
     if on?
       stopped = true
-      time = today.add_stop(time)      
+      today.add_stop(time || now)
     end
-    {"time" => time || 0, "stopped" => stopped || false}
+    {"time" => today.last_stop || 0, "stopped" => stopped || false}
   end
 
   def add_task(task)
@@ -36,7 +34,7 @@ class Timer
   end
 
   private  
-  def time_now
+  def now
     Time.now.to_i
   end
 
