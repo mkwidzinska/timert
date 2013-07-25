@@ -11,8 +11,8 @@ describe Day do
 
   context 'after at least one start and stop time has been added' do
     before  do
-      @day.add_start(Time.now.to_i)
-      @day.add_stop(Time.now.to_i + 100)
+      @day.add_start(now)
+      @day.add_stop(now + 100)
     end
 
     it 'should have method intervals that contains hash with start and stop times' do
@@ -22,7 +22,7 @@ describe Day do
   end
 
   it "should not add start time when last interval hasn't been completed" do
-    time = Time.now.to_i
+    time = now
     @day.add_start(time)
     expect(@day.intervals.length).to eq(1)
     @day.add_start(time)
@@ -30,7 +30,7 @@ describe Day do
   end
 
   it "should not add stop time when no interval is started" do
-    time = Time.now.to_i
+    time = now
     @day.add_start(time)
     @day.add_stop(time + 100)
     @day.add_stop(time + 200)
@@ -87,12 +87,12 @@ describe Day do
   end
 
   it "should return start time when it's added" do
-    time = Time.now.to_i
+    time = now
     expect(@day.add_start(time)).to eq(time)
   end
 
   it "should return stop time when it's added" do
-    time = Time.now.to_i
+    time = now
     @day.add_start(time - 100)
     expect(@day.add_stop(time)).to eq(time)
   end
@@ -104,33 +104,33 @@ describe Day do
   end
 
   it 'should have a method that returns last start time' do
-    time = Time.now.to_i
+    time = now
     @day.add_start(time)
     expect(@day.last_start).to eq(time)
   end
 
   it 'should have a method that returns last stop time' do
-    time = Time.now.to_i
+    time = now
     @day.add_start(time - 500)
     @day.add_stop(time)
     expect(@day.last_stop).to eq(time)
   end
 
   it 'should raise an ArgumentError if passed stop time is lower than last start time' do
-    time = Time.now.to_i
+    time = now
     @day.add_start(time)    
     expect { @day.add_stop(time - 300) }.to raise_error(ArgumentError)
   end
 
   it 'should raise an ArgumentError if passed start time is lower than last start time' do
-    time = Time.now.to_i
+    time = now
     @day.add_start(time)    
     @day.add_stop(time + 600)
     expect { @day.add_start(time - 500) }.to raise_error(ArgumentError)
   end
 
   it 'should raise an ArgumentError if passed start time is lower than last stop time' do
-    time = Time.now.to_i
+    time = now
     @day.add_start(time)
     @day.add_stop(time + 1000)
     expect { @day.add_start(time + 500) }.to raise_error(ArgumentError)
@@ -138,5 +138,9 @@ describe Day do
 
   def duration(hours, minutes, seconds)
     hours * 60 * 60 + minutes * 60 + seconds
+  end
+
+  def now
+    Time.now.to_i
   end
 end
