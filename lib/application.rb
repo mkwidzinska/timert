@@ -21,13 +21,13 @@ class Application
     begin
       timer_result = @timer.start(time)
       if timer_result["started"]
-        @result["message"] = "start timer at #{parse_hour(timer_result["time"])}"
+        add_message("start timer at #{parse_hour(timer_result["time"])}")
         @database.save_today(@timer.today)
       else
-        @result["message"] = "timer already started at #{parse_hour(timer_result["time"])}"
+        add_message("timer already started at #{parse_hour(timer_result["time"])}")
       end    
     rescue ArgumentError => e
-      @result["message"] = e.message
+      add_message(e.message)
     end
   end
 
@@ -35,22 +35,22 @@ class Application
     begin
       timer_result = @timer.stop(time)
       if timer_result["stopped"]      
-        @result["message"] = "stop timer at #{parse_hour(timer_result["time"])}"
+        add_message("stop timer at #{parse_hour(timer_result["time"])}")
         @database.save_today(@timer.today)
       else
-        @result["message"] = "timer isn't started yet"
+        add_message("timer isn't started yet")
       end    
     rescue ArgumentError => e
-      @result["message"] = e.message
+      add_message(e.message)
     end
   end
 
   def report(time_expression)
-    @result["message"] = Report.generate(@database, time_expression)    
+    add_message(Report.generate(@database, time_expression))
   end
 
   def add_task(task)    
-    @result["message"] = "added task: #{task}"
+    add_message("added task: #{task}")
     @timer.add_task(task)
     @database.save_today(@timer.today)
   end
@@ -61,5 +61,9 @@ class Application
 
   def parse_relative_date(day_counter)
     DateFormatter.parse_relative_date(day_counter.to_i)
+  end
+
+  def add_message(msg)
+    @result["message"] = msg
   end
 end
