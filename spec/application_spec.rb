@@ -11,9 +11,6 @@ describe Application do
   end
 
   context 'when initialized with empty arguments' do
-    before do
-    end
-
     it 'should be initialized without errors' do
       expect { app_with_no_args }.to_not raise_error
     end
