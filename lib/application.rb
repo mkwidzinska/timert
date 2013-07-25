@@ -49,11 +49,11 @@ class Application
     @result["message"] = Report.generate(@database, time_expression)    
   end
 
-	def add_task(task)    
+  def add_task(task)    
     @result["message"] = "added task: #{task}"
     @timer.add_task(task)
     @database.save_today(@timer.today)
-	end
+  end
 
   def parse_hour(timestamp)
     DateFormatter.parse_hour(timestamp)
