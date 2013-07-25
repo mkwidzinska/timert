@@ -53,7 +53,7 @@ class Report
 	def self.report_for_day(database, day_counter = 0)
 		day = database.day(day_counter)
 		if day			
-			"REPORT FOR #{relative_date(day_counter)}:\n".blue + 
+			"REPORT FOR #{relative_date(day_counter)}\n".blue + 
 			"\nTasks:\n".green + 
 			"#{format_tasks(day)}\n" + 
 			"\nWork time:\n".green + 
