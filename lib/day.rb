@@ -67,7 +67,11 @@ class Day
 
 	private 
 	def interval_duration(interval)
-		interval["stop"].to_i - interval["start"].to_i		
+		if interval["stop"] && interval["start"]
+			interval["stop"].to_i - interval["start"].to_i		
+		else
+			0
+		end
 	end
 
 	def last_interval

@@ -46,6 +46,13 @@ describe Day do
 		expect(@day.total_elapsed_time).to eq(duration(3, 22, 31))
 	end
 
+	it 'should ignore unfinished intervals when calculating total elapsed time' do
+		@day.add_start(Time.new(2013, 6, 10, 12, 34).to_i)
+		@day.add_stop(Time.new(2013, 6, 10, 14, 51, 10).to_i)
+		@day.add_start(Time.new(2013, 6, 10, 16, 10, 20).to_i)		
+		expect(@day.total_elapsed_time).to eq(duration(2, 17, 10))
+	end
+
 	it 'should have task method that returns an array' do
 		expect(@day.tasks.instance_of?(Array)).to eq(true)		
 	end
