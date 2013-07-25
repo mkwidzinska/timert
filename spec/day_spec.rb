@@ -129,11 +129,25 @@ describe Day do
     expect { @day.add_start(time - 500) }.to raise_error(ArgumentError)
   end
 
+  it 'should raise an ArgumentError if passed start time is equal to last start time' do
+    time = now
+    @day.add_start(time)    
+    @day.add_stop(time + 600)
+    expect { @day.add_start(time) }.to raise_error(ArgumentError)
+  end
+
   it 'should raise an ArgumentError if passed start time is lower than last stop time' do
     time = now
     @day.add_start(time)
     @day.add_stop(time + 1000)
     expect { @day.add_start(time + 500) }.to raise_error(ArgumentError)
+  end
+
+  it 'should not raise an ArgumentError if passed start time is equal to last stop time' do
+    time = now
+    @day.add_start(time)
+    @day.add_stop(time + 1000)
+    expect { @day.add_start(time + 1000) }.not_to raise_error(ArgumentError)
   end
 
   def duration(hours, minutes, seconds)
