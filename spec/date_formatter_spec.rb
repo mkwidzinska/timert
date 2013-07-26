@@ -42,7 +42,12 @@ describe DateFormatter do
     expect(DateFormatter.round_duration(d)).to eq("5.5")
   end
 
-  def duration(hours, minutes, seconds)
+  it 'should have a method that returns rounded duration when a full-hour duration is passed' do
+    d = duration(4)
+    expect(DateFormatter.round_duration(d)).to eq("4")
+  end
+
+  def duration(hours, minutes = 0, seconds = 0)
     hours * 60 * 60 + minutes * 60 + seconds
   end
 end

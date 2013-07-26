@@ -27,7 +27,7 @@ class DateFormatter
     if second_half.include?(part)
       hours += 1
       part = 0
-    else
+    elsif part > 0
       part = 5
     end
     part.zero? ? hours.to_s : "#{hours}.#{part}"
