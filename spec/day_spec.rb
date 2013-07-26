@@ -11,15 +11,36 @@ describe Day do
     expect(@day.intervals.instance_of?(Array)).to eq(true)
   end
 
-  context 'after at least one start and stop time has been added' do
+  context 'containing a 100 seconds interval' do
     before  do
       @day.add_start(now)
       @day.add_stop(now + 100)
     end
 
-    it 'should have method intervals that contains hash with start and stop times' do
-      expect(@day.intervals.last["start"]).to_not eq(nil)
-      expect(@day.intervals.last["stop"]).to_not eq(nil)
+    it 'should have a method intervals that contains hash with start and stop times' do
+      expect(@day.intervals).to eq([{"start" => now, "stop" => now + 100}])      
+    end
+
+    it 'should have a method that returns total elapsed time' do
+      expect(@day.total_elapsed_time).to eq(100)
+    end
+
+    it 'should have a method that returns a hash representation of the object' do
+      expect(@day.to_hash).to eq({
+        "intervals" => [{"start" => now, "stop" => now + 100}],
+        "tasks" => []})
+    end
+
+    it 'should have a method that says that no interval is started' do
+      expect(@day.is_interval_started?).to eq(false)
+    end
+
+    it 'should have a method that returns the time of the last start' do
+      expect(@day.last_start).to eq(now)      
+    end
+
+    it 'should have a method that returns the time of the last start' do
+      expect(@day.last_stop).to eq(now + 100)
     end
   end
 
