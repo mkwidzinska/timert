@@ -3,6 +3,7 @@ require_relative 'timer'
 require_relative 'date_formatter'
 require_relative 'database'
 require_relative 'report'
+require_relative 'help'
 
 class Application
   attr_reader :result
@@ -13,7 +14,7 @@ class Application
     @result = {}
 
     parser = ArgumentParser.new(argv)
-    send(parser.action, parser.argument) if parser.action
+    parser.action ? send(parser.action, parser.argument) : help
   end
 
   private
@@ -55,6 +56,10 @@ class Application
     @database.save_today(@timer.today)
   end
 
+  def help
+    add_message(Help.generate)
+  end
+
   def parse_hour(timestamp)
     DateFormatter.parse_hour(timestamp)
   end
@@ -65,5 +70,5 @@ class Application
 
   def add_message(msg)
     @result["message"] = msg
-  end
+  end  
 end
