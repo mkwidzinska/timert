@@ -66,9 +66,11 @@ class Day
   end
 
   private 
-  def interval_duration(interval)
-    if interval["stop"] && interval["start"]
-      interval["stop"].to_i - interval["start"].to_i    
+  def interval_duration(interval)    
+    start, stop = interval["start"], interval["stop"]
+    if start      
+      stop ||= interval_end_when_start(start)
+      stop.to_i - start.to_i    
     else
       0
     end
@@ -76,5 +78,18 @@ class Day
 
   def last_interval
     @intervals.length > 0 ? @intervals.last : {}
+  end
+
+  def interval_end_when_start(timestamp)
+    day_is_today?(timestamp) ? Time.now.to_i : last_second_of_day(timestamp)    
+  end
+
+  def day_is_today?(timestamp)
+    Time.now.to_date == Time.at(timestamp).to_date
+  end
+
+  def last_second_of_day(timestamp)
+    time = Time.at(timestamp)
+    Time.new(time.year, time.month, time.day, 23, 59, 59)
   end
 end

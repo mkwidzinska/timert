@@ -1,3 +1,5 @@
+require 'timecop'
+
 require_relative '../lib/day'
 
 describe Day do
@@ -46,11 +48,28 @@ describe Day do
     expect(@day.total_elapsed_time).to eq(duration(3, 22, 31))
   end
 
-  it 'should ignore unfinished intervals when calculating total elapsed time' do
-    @day.add_start(Time.new(2013, 6, 10, 12, 34).to_i)
-    @day.add_stop(Time.new(2013, 6, 10, 14, 51, 10).to_i)
-    @day.add_start(Time.new(2013, 6, 10, 16, 10, 20).to_i)    
-    expect(@day.total_elapsed_time).to eq(duration(2, 17, 10))
+  context "when calculating total elapsed time and when last interval isn't finished" do
+    context 'and the day is today' do
+      it "should assume the interval's end to now" do
+        Timecop.freeze(Time.new(2013, 6, 10, 18, 10, 20)) do
+          @day.add_start(Time.new(2013, 6, 10, 12, 34).to_i)
+          @day.add_stop(Time.new(2013, 6, 10, 14, 51, 10).to_i)
+          @day.add_start(Time.new(2013, 6, 10, 16, 10, 20).to_i)    
+          expect(@day.total_elapsed_time).to eq(duration(4, 17, 10))
+        end
+      end
+    end
+
+    context "and the day is yesterday" do
+      it "should assume the interval's end to the last second of yesteday" do
+        Timecop.freeze(Time.new(2013, 6, 10, 18, 10, 20)) do
+          @day.add_start(Time.new(2013, 6, 9, 12, 34).to_i)
+          @day.add_stop(Time.new(2013, 6, 9, 14, 51, 10).to_i)
+          @day.add_start(Time.new(2013, 6, 9, 16, 0, 0).to_i)    
+          expect(@day.total_elapsed_time).to eq(duration(10, 17, 9))
+        end
+      end
+    end
   end
 
   it 'should have task method that returns an array' do
