@@ -28,6 +28,14 @@ class DateFormatter
     part.zero? ? hours.to_s : "#{hours}.#{part}"
   end
 
+  def self.parse_time(arg)
+    if arg
+      hours, minutes = arg.split(":")
+      now = Time.now
+      Time.new(now.year, now.month, now.day, hours, minutes).to_i
+    end
+  end
+
   private
   def self.hours(duration)
     duration / 3600

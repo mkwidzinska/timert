@@ -1,3 +1,5 @@
+require_relative "date_formatter"
+
 class ArgumentParser
   attr_reader :action, :argument
 
@@ -44,10 +46,6 @@ class ArgumentParser
   end
 
   def parse_time(arg)
-    if arg
-      hours, minutes = arg.split(":")
-      now = Time.now
-      Time.new(now.year, now.month, now.day, hours, minutes).to_i
-    end
+    DateFormatter.parse_time(arg)
   end
 end
