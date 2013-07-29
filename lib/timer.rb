@@ -10,8 +10,7 @@ class Timer
       started = true
       today.add_start(time || now)          
     end
-    # :time, :started
-    {"time" => today.last_start, "started" => started}
+    {time: today.last_start, started: started}
   end
 
   def stop(time = nil)
@@ -19,7 +18,7 @@ class Timer
       stopped = true
       today.add_stop(time || now)
     end
-    {"time" => today.last_stop, "stopped" => stopped}
+    {time: today.last_stop, stopped: stopped}
   end
 
   def add_task(task)

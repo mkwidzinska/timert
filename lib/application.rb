@@ -21,11 +21,11 @@ class Application
   def start(time = nil)
     begin
       timer_result = @timer.start(time)
-      if timer_result["started"]
-        add_message("start timer at #{parse_hour(timer_result["time"])}")
+      if timer_result[:started]
+        add_message("start timer at #{parse_hour(timer_result[:time])}")
         @database.save_today(@timer.today)
       else
-        add_message("timer already started at #{parse_hour(timer_result["time"])}")
+        add_message("timer already started at #{parse_hour(timer_result[:time])}")
       end    
     rescue ArgumentError => e
       add_message(e.message)
@@ -35,8 +35,8 @@ class Application
   def stop(time = nil)
     begin
       timer_result = @timer.stop(time)
-      if timer_result["stopped"]      
-        add_message("stop timer at #{parse_hour(timer_result["time"])}")
+      if timer_result[:stopped]      
+        add_message("stop timer at #{parse_hour(timer_result[:time])}")
         @database.save_today(@timer.today)
       else
         add_message("timer isn't started yet")
