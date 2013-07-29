@@ -6,12 +6,8 @@ class DateFormatter
     timestamp ? Time.at(timestamp).strftime("%H:%M:%S") : ""
   end
 
-  def self.parse_date(timestamp)
-    timestamp ? Time.at(timestamp).strftime("%Y-%m-%d") : ""
-  end
-
-  def self.parse_relative_date(day_counter = 0, today = Time.new)
-    parse_date((today.to_date + day_counter).to_time.to_i)
+  def self.parse_date(date)
+    date ? date.strftime("%Y-%m-%d") : ""
   end
 
   def self.parse_elapsed_time(duration)

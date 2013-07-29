@@ -9,11 +9,11 @@ class Database
   end
 
   def today
-    day(0)
+    day
   end
 
-  def day(day_counter = 0)    
-    hash_to_day(data[key(day_counter)])
+  def day(date = nil)    
+    hash_to_day(data[key(date)])
   end
 
   def days(range)
@@ -21,7 +21,7 @@ class Database
     result = []
     entries.each_pair do |date, day_hash|
       if range.include?(date.to_i)
-        result << {"date" => date.to_i, "day" => hash_to_day(day_hash)}
+        result << {"date" => Time.at(date.to_i).to_date, "day" => hash_to_day(day_hash)}
       end
     end
     result
@@ -47,11 +47,11 @@ class Database
   end
 
   def today_key
-    key(0)
+    key
   end
 
-  def key(day_counter = 0)
-    (Date.today + day_counter).to_time.to_i.to_s
+  def key(date = nil)
+    date ? date.to_time.to_i.to_s : key(Date.today)
   end
 
   def hash_to_day(day_hash)

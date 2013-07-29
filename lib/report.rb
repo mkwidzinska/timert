@@ -51,9 +51,10 @@ class Report
   end
 
   def self.report_for_day(database, day_counter = 0)
-    day = database.day(day_counter)
+    date = Date.today + day_counter
+    day = database.day(date)
     if day      
-      "REPORT FOR #{relative_date(day_counter)}\n".blue + 
+      "REPORT FOR #{parse_date(date)}\n".blue + 
         "\nTasks:\n".green + 
         "#{format_tasks(day)}\n" + 
         "\nWork time:\n".green + 
@@ -81,12 +82,8 @@ class Report
     s
   end  
 
-  def self.parse_date(timestamp)
-    DateFormatter.parse_date(timestamp)
-  end
-
-  def self.relative_date(day_counter)
-    DateFormatter.parse_relative_date(day_counter)
+  def self.parse_date(date)
+    DateFormatter.parse_date(date)
   end
 
   def self.parse_duration(duration)

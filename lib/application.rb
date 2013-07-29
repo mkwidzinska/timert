@@ -64,10 +64,6 @@ class Application
     DateFormatter.parse_hour(timestamp)
   end
 
-  def parse_relative_date(day_counter)
-    DateFormatter.parse_relative_date(day_counter.to_i)
-  end
-
   def add_message(msg)
     @result["message"] = msg
   end  
