@@ -3,7 +3,8 @@ class ArgumentParser
 
   def initialize(args)
     if args.length == 0
-      @action = @argument = nil
+      @action = "help"
+      @argument = nil
     elsif is_api?(args[0])
       @action = args[0]
       @argument = is_time_method?(@action) ? parse_time(args[1]) : args[1]

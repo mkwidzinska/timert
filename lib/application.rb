@@ -14,7 +14,7 @@ class Application
     @result = {}
 
     parser = ArgumentParser.new(argv)
-    parser.action ? send(parser.action, parser.argument) : help
+    send(parser.action, *[parser.argument].compact)
   end
 
   private

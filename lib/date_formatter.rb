@@ -11,8 +11,7 @@ class DateFormatter
   end
 
   def self.parse_relative_date(day_counter = 0, today = Time.new)
-    today_date = Date.new(today.year, today.month, today.day)
-    parse_date((today_date + day_counter).to_time.to_i)    
+    parse_date((today.to_date + day_counter).to_time.to_i)
   end
 
   def self.parse_elapsed_time(duration)

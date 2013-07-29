@@ -1,12 +1,8 @@
-require 'json'
-require 'date'
-require_relative 'day'
-
 class Timer  
-  attr_reader :path
+  attr_reader :path, :today
 
-  def initialize(today = nil)
-    @today = today || Day.new
+  def initialize(today)
+    @today = today
   end
 
   def start(time = nil)
@@ -14,7 +10,8 @@ class Timer
       started = true
       today.add_start(time || now)          
     end
-    {"time" => today.last_start, "started" => started || false}
+    # :time, :started
+    {"time" => today.last_start, "started" => started}
   end
 
   def stop(time = nil)
@@ -22,18 +19,14 @@ class Timer
       stopped = true
       today.add_stop(time || now)
     end
-    {"time" => today.last_stop || 0, "stopped" => stopped || false}
+    {"time" => today.last_stop, "stopped" => stopped}
   end
 
   def add_task(task)
     today.add_task(task)    
   end
 
-  def today
-    @today
-  end
-
-  private  
+  private    
   def now
     Time.now.to_i
   end

@@ -44,7 +44,7 @@ describe Day do
     end
   end
 
-  it "should not add start time when last interval hasn't been completed" do
+  it "should not add a new interval when the last one hasn't been completed" do
     time = now
     @day.add_start(time)
     expect(@day.intervals.length).to eq(1)
@@ -56,7 +56,7 @@ describe Day do
     time = now
     @day.add_start(time)
     @day.add_stop(time + 100)
-    @day.add_stop(time + 200)
+    @day.add_stop(time + 200)   
     expect(@day.intervals.length).to eq(1)
     expect(@day.intervals.last["stop"]).to eq(time + 100)
   end
@@ -70,12 +70,18 @@ describe Day do
   end
 
   context "when calculating total elapsed time and when last interval isn't finished" do
+    before do
+      Timecop.freeze(Time.new(2013, 6, 10, 18, 10, 20)) do
+        @day.add_start(Time.new(2013, 6, 10, 12, 34).to_i)
+        @day.add_stop(Time.new(2013, 6, 10, 14, 51, 10).to_i)
+        @day.add_start(Time.new(2013, 6, 10, 16, 10, 20).to_i)    
+        expect(@day.total_elapsed_time).to eq(duration(4, 17, 10))
+      end
+    end
+
     context 'and the day is today' do
       it "should assume the interval's end to now" do
         Timecop.freeze(Time.new(2013, 6, 10, 18, 10, 20)) do
-          @day.add_start(Time.new(2013, 6, 10, 12, 34).to_i)
-          @day.add_stop(Time.new(2013, 6, 10, 14, 51, 10).to_i)
-          @day.add_start(Time.new(2013, 6, 10, 16, 10, 20).to_i)    
           expect(@day.total_elapsed_time).to eq(duration(4, 17, 10))
         end
       end
@@ -83,11 +89,8 @@ describe Day do
 
     context "and the day is yesterday" do
       it "should assume the interval's end to the last second of yesteday" do
-        Timecop.freeze(Time.new(2013, 6, 10, 18, 10, 20)) do
-          @day.add_start(Time.new(2013, 6, 9, 12, 34).to_i)
-          @day.add_stop(Time.new(2013, 6, 9, 14, 51, 10).to_i)
-          @day.add_start(Time.new(2013, 6, 9, 16, 0, 0).to_i)    
-          expect(@day.total_elapsed_time).to eq(duration(10, 17, 9))
+        Timecop.freeze(Time.new(2013, 6, 11, 18, 10, 20)) do
+          expect(@day.total_elapsed_time).to eq(duration(10, 6, 49))
         end
       end
     end
@@ -122,7 +125,7 @@ describe Day do
         "intervals" => [{"start" => 124, "stop" => 1300}],
         "tasks" => ["debugging", "emails"]        
       }
-      expect(@day.to_hash).to eq(hash)      
+      expect(@day.to_hash).to eq(hash)  
     end
   end
 
