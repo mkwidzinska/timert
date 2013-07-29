@@ -50,12 +50,12 @@ describe Database do
     
     past = Timecop.freeze(first["date"]) do
       @db.save_today(first["day"])
-      (Date.today - 5).to_time.to_i
+      Date.today - 5
     end
     
     present = Timecop.freeze(second["date"]) do
       @db.save_today(second["day"])
-      Date.today.to_time.to_i
+      Date.today
     end
     
     expect(@db.days(Range.new(past, present))).to eq([first, second])

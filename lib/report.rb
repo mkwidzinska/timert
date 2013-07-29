@@ -20,13 +20,13 @@ class Report
     first = today - today.cwday
     last = first + 6
     "REPORT FOR THIS WEEK\n".blue +
-      report_for_range(Range.new(first.to_time.to_i, last.to_time.to_i), database)
+      report_for_range(Range.new(first, last), database)
   end
 
   def self.report_for_month(database)
     today = Date.today
-    first = Date.new(today.year, today.month, 1).to_time.to_i 
-    last = Date.new(today.year, today.month, -1).to_time.to_i     
+    first = Date.new(today.year, today.month, 1)
+    last = Date.new(today.year, today.month, -1)
     "REPORT FOR THIS MONTH\n".blue +
       report_for_range(Range.new(first, last), database)
   end

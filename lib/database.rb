@@ -20,8 +20,9 @@ class Database
     entries = data
     result = []
     entries.each_pair do |date, day_hash|
-      if range.include?(date.to_i)
-        result << {"date" => Time.at(date.to_i).to_date, "day" => hash_to_day(day_hash)}
+      date = Time.at(date.to_i).to_date
+      if range.include?(date)
+        result << {"date" => date, "day" => hash_to_day(day_hash)}
       end
     end
     result
