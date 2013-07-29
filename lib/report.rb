@@ -1,6 +1,7 @@
 require 'colorize'
 require 'date'
 require_relative 'date_util'
+require_relative 'duration'
 
 class Report
   
@@ -87,10 +88,10 @@ class Report
   end
 
   def self.parse_duration(duration)
-    DateUtil.format_elapsed_time(duration)
+    Duration.new(duration).to_s
   end
 
   def self.round_duration(duration)
-    DateUtil.round_duration(duration)
+    Duration.new(duration).round
   end
 end
