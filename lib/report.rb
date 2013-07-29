@@ -39,7 +39,7 @@ class Report
     
     data.each do |d|
       date, day = d["date"], d["day"]
-      s += "#{parse_date(date)}: ".yellow + 
+      s += "#{format_date(date)}: ".yellow + 
         "#{parse_duration(day.total_elapsed_time)} " +
         "(#{format_tasks(day)})\n"
       total_time += day.total_elapsed_time
@@ -54,7 +54,7 @@ class Report
     date = Date.today + day_counter
     day = database.day(date)
     if day      
-      "REPORT FOR #{parse_date(date)}\n".blue + 
+      "REPORT FOR #{format_date(date)}\n".blue + 
         "\nTasks:\n".green + 
         "#{format_tasks(day)}\n" + 
         "\nWork time:\n".green + 
@@ -82,8 +82,8 @@ class Report
     s
   end  
 
-  def self.parse_date(date)
-    DateUtil.parse_date(date)
+  def self.format_date(date)
+    DateUtil.format_date(date)
   end
 
   def self.parse_duration(duration)

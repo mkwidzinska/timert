@@ -6,7 +6,7 @@ class DateUtil
     timestamp ? Time.at(timestamp).strftime("%H:%M:%S") : ""
   end
 
-  def self.parse_date(date)
+  def self.format_date(date)
     date ? date.strftime("%Y-%m-%d") : ""
   end
 
