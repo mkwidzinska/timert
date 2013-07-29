@@ -15,17 +15,7 @@ class DateUtil
   end
 
   def self.round_duration(duration)
-    hours = hours(duration)
-    part = (minutes(duration) / 60.0) * 10
-    second_half = Range.new(5, 10)
-
-    if second_half.include?(part)
-      hours += 1
-      part = 0
-    elsif part > 0
-      part = 5
-    end
-    part.zero? ? hours.to_s : "#{hours}.#{part}"
+    ((duration / 1800.0).ceil / 2.0).to_s
   end
 
   def self.parse_time(arg)

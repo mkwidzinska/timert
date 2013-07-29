@@ -21,7 +21,7 @@ describe DateUtil do
 
   it 'should have a method that returns rounded duration when a full-hour duration is passed' do
     d = duration(4)
-    expect(DateUtil.round_duration(d)).to eq("4")
+    expect(DateUtil.round_duration(d)).to eq("4.0")
   end
 
   def duration(hours, minutes = 0, seconds = 0)
