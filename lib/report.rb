@@ -87,7 +87,7 @@ class Report
   end
 
   def self.parse_duration(duration)
-    DateUtil.parse_elapsed_time(duration)
+    DateUtil.format_elapsed_time(duration)
   end
 
   def self.round_duration(duration)

@@ -8,10 +8,10 @@ describe DateUtil do
 
   it 'should return formatted total elapsed time' do
     time = 5 * 60 * 60 + 45 * 60 + 5
-    expect(DateUtil.parse_elapsed_time(time)).to eq("5h 45min 5sec")    
+    expect(DateUtil.format_elapsed_time(time)).to eq("5h 45min 5sec")    
 
     time = 15 * 60 * 60 + 56
-    expect(DateUtil.parse_elapsed_time(time)).to eq("15h 0min 56sec")    
+    expect(DateUtil.format_elapsed_time(time)).to eq("15h 0min 56sec")    
   end
 
   it 'should have a method that returns rounded, decimal duration' do

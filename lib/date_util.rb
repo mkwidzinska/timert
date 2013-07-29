@@ -10,7 +10,7 @@ class DateUtil
     date ? date.strftime("%Y-%m-%d") : ""
   end
 
-  def self.parse_elapsed_time(duration)
+  def self.format_elapsed_time(duration)
     "#{hours(duration)}h #{minutes(duration)}min #{seconds(duration)}sec"
   end
 
