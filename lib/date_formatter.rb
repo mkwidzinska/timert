@@ -3,11 +3,11 @@ require 'date'
 class DateFormatter
   
   def self.parse_hour(timestamp)
-    timestamp ? Time.at(timestamp).to_s.split[1] : ""
+    timestamp ? Time.at(timestamp).strftime("%H:%M:%S") : ""
   end
 
   def self.parse_date(timestamp)
-    timestamp ? Time.at(timestamp).to_s.split[0] : ""
+    timestamp ? Time.at(timestamp).strftime("%Y-%m-%d") : ""
   end
 
   def self.parse_relative_date(day_counter = 0, today = Time.new)
