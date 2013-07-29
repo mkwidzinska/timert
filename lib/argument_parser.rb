@@ -1,4 +1,4 @@
-require_relative "date_formatter"
+require_relative "date_util"
 
 class ArgumentParser
   attr_reader :action, :argument
@@ -46,6 +46,6 @@ class ArgumentParser
   end
 
   def parse_time(arg)
-    DateFormatter.parse_time(arg)
+    DateUtil.parse_time(arg)
   end
 end

@@ -1,6 +1,6 @@
 require 'colorize'
 require 'date'
-require_relative 'date_formatter'
+require_relative 'date_util'
 
 class Report
   
@@ -75,22 +75,22 @@ class Report
   def self.format_intervals(day)
     s = ""
     day.intervals.each do |i| 
-      start = DateFormatter.parse_hour(i["start"])
-      stop = DateFormatter.parse_hour(i["stop"])
+      start = DateUtil.parse_hour(i["start"])
+      stop = DateUtil.parse_hour(i["stop"])
       s += "#{start} - #{stop}\n"
     end
     s
   end  
 
   def self.parse_date(date)
-    DateFormatter.parse_date(date)
+    DateUtil.parse_date(date)
   end
 
   def self.parse_duration(duration)
-    DateFormatter.parse_elapsed_time(duration)
+    DateUtil.parse_elapsed_time(duration)
   end
 
   def self.round_duration(duration)
-    DateFormatter.round_duration(duration)
+    DateUtil.round_duration(duration)
   end
 end

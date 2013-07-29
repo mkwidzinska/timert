@@ -1,6 +1,6 @@
 require_relative 'argument_parser'
 require_relative 'timer'
-require_relative 'date_formatter'
+require_relative 'date_util'
 require_relative 'database'
 require_relative 'report'
 require_relative 'help'
@@ -61,7 +61,7 @@ class Application
   end
 
   def parse_hour(timestamp)
-    DateFormatter.parse_hour(timestamp)
+    DateUtil.parse_hour(timestamp)
   end
 
   def add_message(msg)

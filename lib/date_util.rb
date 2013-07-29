@@ -1,6 +1,6 @@
 require 'date'
 
-class DateFormatter
+class DateUtil
   
   def self.parse_hour(timestamp)
     timestamp ? Time.at(timestamp).strftime("%H:%M:%S") : ""
