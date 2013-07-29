@@ -35,8 +35,8 @@ describe ArgumentParser do
     expect(ap_with_start.argument).to eq(nil)
   end
 
-  it 'should have action and argument equal to nil if empty array is passed' do
-    expect(ap_with_empty_array.action).to eq(nil)
+  it 'should have action equal to help and argument equal to nil if empty array is passed' do
+    expect(ap_with_empty_array.action).to eq("help")
     expect(ap_with_empty_array.argument).to eq(nil)
   end
 
