@@ -2,7 +2,7 @@ require 'date'
 
 class DateUtil
   
-  def self.parse_hour(timestamp)
+  def self.format_hour(timestamp)
     timestamp ? Time.at(timestamp).strftime("%H:%M:%S") : ""
   end
 

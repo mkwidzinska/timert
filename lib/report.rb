@@ -75,8 +75,8 @@ class Report
   def self.format_intervals(day)
     s = ""
     day.intervals.each do |i| 
-      start = DateUtil.parse_hour(i["start"])
-      stop = DateUtil.parse_hour(i["stop"])
+      start = DateUtil.format_hour(i["start"])
+      stop = DateUtil.format_hour(i["stop"])
       s += "#{start} - #{stop}\n"
     end
     s

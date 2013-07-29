@@ -22,10 +22,10 @@ class Application
     begin
       timer_result = @timer.start(time)
       if timer_result[:started]
-        add_message("start timer at #{parse_hour(timer_result[:time])}")
+        add_message("start timer at #{format_hour(timer_result[:time])}")
         @database.save_today(@timer.today)
       else
-        add_message("timer already started at #{parse_hour(timer_result[:time])}")
+        add_message("timer already started at #{format_hour(timer_result[:time])}")
       end    
     rescue ArgumentError => e
       add_message(e.message)
@@ -36,7 +36,7 @@ class Application
     begin
       timer_result = @timer.stop(time)
       if timer_result[:stopped]      
-        add_message("stop timer at #{parse_hour(timer_result[:time])}")
+        add_message("stop timer at #{format_hour(timer_result[:time])}")
         @database.save_today(@timer.today)
       else
         add_message("timer isn't started yet")
@@ -60,8 +60,8 @@ class Application
     add_message(Help.generate)
   end
 
-  def parse_hour(timestamp)
-    DateUtil.parse_hour(timestamp)
+  def format_hour(timestamp)
+    DateUtil.format_hour(timestamp)
   end
 
   def add_message(msg)
