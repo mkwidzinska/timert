@@ -2,10 +2,9 @@ require 'json'
 require_relative 'day'
 
 class Database
-  # DatabaseFile as arg, interface: load, save, init(path)
-  def initialize(path)
-    @path = path
-    # @json = file.load
+  
+  def initialize(file)
+    @file = file
   end
 
   def today
@@ -35,15 +34,13 @@ class Database
   end
 
   private
-  # load data
+  
   def load_data
-    File.open(@path, 'a+') do |file|
-      file.size > 0 ? JSON.load(file) : {}
-    end
+    @file.load
   end
-  # save data
+
   def save_data(hash)
-    File.open(@path, 'w+') { |f| f.write(hash.to_json) }
+    @file.save(hash)
   end
 
   def key(date = nil)

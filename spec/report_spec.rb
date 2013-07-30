@@ -2,12 +2,14 @@ require 'timecop'
 
 require_relative '../lib/report'
 require_relative '../lib/database'
+require_relative '../lib/database_file'
 require_relative '../lib/day'
 
 describe Report do
   let(:path) { './spec/data/timert' }
   let(:database) { 
-    db = Database.new(path)     
+    db = Database.new(DatabaseFile.new(path))     
+
     Timecop.freeze(Time.new(2013, 2, 20, 19)) do
       db.save(sample_day)
     end

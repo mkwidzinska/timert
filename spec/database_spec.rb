@@ -2,12 +2,13 @@ require 'timecop'
 require 'date'
 
 require_relative '../lib/database'
+require_relative '../lib/database_file'
 require_relative '../lib/day'
 
 describe Database do
   before(:each) do
     @path = "./spec/data/test_data"
-    @db = Database.new(@path)    
+    @db = Database.new(DatabaseFile.new(@path))
   end
 
   after(:each) do

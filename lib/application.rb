@@ -2,6 +2,7 @@ require_relative 'argument_parser'
 require_relative 'timer'
 require_relative 'date_util'
 require_relative 'database'
+require_relative 'database_file'
 require_relative 'report'
 require_relative 'help'
 
@@ -9,7 +10,7 @@ class Application
   attr_reader :result
 
   def initialize(argv, db_path)
-    @database = Database.new(db_path)    
+    @database = Database.new(DatabaseFile.new(db_path))    
     @timer = Timer.new(@database.today)
     @result = {}
 

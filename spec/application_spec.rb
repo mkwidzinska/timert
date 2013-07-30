@@ -1,9 +1,11 @@
 require 'timecop'
 require_relative '../lib/application'
+require_relative '../lib/database'
+require_relative '../lib/database_file'
 
 describe Application do
   let(:path) { './spec/data/timert' }
-  let(:database) { Database.new(path) }
+  let(:database) { Database.new(DatabaseFile.new(path)) }
   let(:app_with_no_args) { Application.new([], path) }
   
   after(:each) do
