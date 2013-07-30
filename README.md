@@ -13,7 +13,7 @@ Timert is a RubyGem and can be installed using:
 $ gem install timert
 ```
 
-and run it:
+and run with:
 
 ``` shell
 $ timert
@@ -24,10 +24,10 @@ $ timert
 List of commands:
 
 ``` shell
-start [ARG]             Starts the timer. [ARG]: hour.\n"\
-stop [ARG]              Stops the timer. [ARG]: hour.\n"\
-report [ARG]            Displays a summary report. [ARG]: number, 'week' or 'month'.\n"\
-<anything else>         Adds a task.\n\n"\
+start [ARG]             Starts the timer. [ARG]: hour.
+stop [ARG]              Stops the timer. [ARG]: hour.
+report [ARG]            Displays a summary report. [ARG]: number, 'week' or 'month'.
+<anything else>         Adds a task.
 ```
 
 # Examples
@@ -38,16 +38,20 @@ Start the timer at the current hour:
 $ timert start
 ```
 
+
 Start the timer at the given hour:
 
 ``` shell
 $ timert start 12:20      
+```
+
 
 Stop the timer at the given hour:
 
 ``` shell
 $ timert stop 14
 ```
+
 
 Display a summary for today:
 
@@ -61,11 +65,13 @@ Display a summary for yesterday:
 $ timert report -1
 ```
 
+
 Display a summary for this week:
 
 ``` shell
 $ timert report week
 ```
+
 
 Display a summary report for this month:
 
@@ -73,15 +79,19 @@ Display a summary report for this month:
 $ timert report month
 ```
 
-Add a task: 'writing emails':
+
+Add a task 'writing emails':
 
 ``` shell
 $ timert writing emails
 ```
 
+
 A sample report:
 
 ``` shell
+$ timert report
+
 REPORT FOR TODAY
 
 Tasks:
