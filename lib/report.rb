@@ -33,14 +33,13 @@ class Report
   end
 
   def self.report_for_range(range, database)
-    data = database.days(range)
+    days = database.days(range)
     
     s = "\nDay/time elapsed\n".green
     total_time = 0
     
-    data.each do |d|
-      date, day = d["date"], d["day"]
-      s += "#{format_date(date)}: ".yellow + 
+    days.each do |day|
+      s += "#{format_date(day.date)}: ".yellow + 
         "#{parse_duration(day.total_elapsed_time)} " +
         "(#{format_tasks(day)})\n"
       total_time += day.total_elapsed_time

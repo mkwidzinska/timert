@@ -12,52 +12,50 @@ class Database
     day
   end
 
-  def day(date = nil)    
-    hash_to_day(data[key(date)])
+  def day(date = Date.today)    
+    hash_to_day(load_data[key(date)], date)
   end
 
   def days(range)
-    entries = data
+    entries = load_data
     result = []
     entries.each_pair do |date, day_hash|
-      date = Time.at(date.to_i).to_date
-      if range.include?(date)
-        result << {"date" => date, "day" => hash_to_day(day_hash)}
+      day = hash_to_day(day_hash, Time.at(date.to_i).to_date)
+      if range.include?(day.date)
+        result << day
       end
     end
     result
   end
 
-  def save_today(day)
-    # zamienic na save
-    current_data = data
-    current_data[today_key] = day.to_hash
-    save(current_data)
+  def save(day)
+    current_data = load_data
+    current_data[key(day.date)] = day.to_hash
+    save_data(current_data)
   end
 
   private
   # load data
-  def data
+  def load_data
     File.open(@path, 'a+') do |file|
       file.size > 0 ? JSON.load(file) : {}
     end
   end
   # save data
-  def save(hash)
+  def save_data(hash)
     File.open(@path, 'w+') { |f| f.write(hash.to_json) }
-  end
-
-  def today_key
-    key
   end
 
   def key(date = nil)
     date ? date.to_time.to_i.to_s : key(Date.today)
   end
 
-  def hash_to_day(day_hash)
+  def hash_to_day(day_hash, date)
     if day_hash
-      Day.new(intervals: day_hash["intervals"], tasks: day_hash["tasks"])
+      Day.new(
+        intervals: day_hash["intervals"], 
+        tasks: day_hash["tasks"],
+        date: date)
     else
       Day.new
     end

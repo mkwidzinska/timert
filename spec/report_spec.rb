@@ -9,10 +9,10 @@ describe Report do
   let(:database) { 
     db = Database.new(path)     
     Timecop.freeze(Time.new(2013, 2, 20, 19)) do
-      db.save_today(sample_day)
+      db.save(sample_day)
     end
     Timecop.freeze(Time.new(2013, 2, 19, 19)) do
-      db.save_today(sample_day)
+      db.save(sample_day)
     end
     db
   }

@@ -23,7 +23,7 @@ class Application
       timer_result = @timer.start(time)
       if timer_result[:started]
         add_message("start timer at #{format_hour(timer_result[:time])}")
-        @database.save_today(@timer.today)
+        @database.save(@timer.today)
       else
         add_message("timer already started at #{format_hour(timer_result[:time])}")
       end    
@@ -37,7 +37,7 @@ class Application
       timer_result = @timer.stop(time)
       if timer_result[:stopped]      
         add_message("stop timer at #{format_hour(timer_result[:time])}")
-        @database.save_today(@timer.today)
+        @database.save(@timer.today)
       else
         add_message("timer isn't started yet")
       end    
@@ -53,7 +53,7 @@ class Application
   def add_task(task)    
     add_message("added task: #{task}")
     @timer.add_task(task)
-    @database.save_today(@timer.today)
+    @database.save(@timer.today)
   end
 
   def help
