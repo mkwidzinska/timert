@@ -1,12 +1,12 @@
 require 'json'
 require 'timecop'
-require_relative '../lib/timer'
-require_relative '../lib/day'
+require_relative '../lib/timert/timer'
+require_relative '../lib/timert/day'
 
-describe Timer do
+describe Timert::Timer do
   before(:each) do
-    @today = Day.new
-    @timer = Timer.new(@today)
+    @today = Timert::Day.new
+    @timer = Timert::Timer.new(@today)
   end  
 
   it 'should return start time when started' do    

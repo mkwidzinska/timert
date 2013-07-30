@@ -1,10 +1,10 @@
-require_relative '../lib/database_file'
+require_relative '../lib/timert/database_file'
 
-describe DatabaseFile do
+describe Timert::DatabaseFile do
   let(:path) { './spec/data/timert' }
 
   before(:each) do
-    @file = DatabaseFile.new(path)
+    @file = Timert::DatabaseFile.new(path)
   end
 
   after(:each) do

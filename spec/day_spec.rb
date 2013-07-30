@@ -1,11 +1,11 @@
 require 'date'
 require 'timecop'
 
-require_relative '../lib/day'
+require_relative '../lib/timert/day'
 
-describe Day do
+describe Timert::Day do
   before(:each) do
-    @day = Day.new
+    @day = Timert::Day.new
   end
 
   def now
@@ -113,7 +113,7 @@ describe Day do
 
   context 'after initialized with hash data' do
     before do
-      @day = Day.new(
+      @day = Timert::Day.new(
         intervals: [{"start" => now, "stop" => now + 300}],
         tasks: ["debugging", "emails"],
         date: Time.now.to_date
@@ -148,8 +148,8 @@ describe Day do
   end
 
   it 'should be equal to other day with the same data' do
-    first_day = Day.new(tasks: ["emails"])
-    second_day = Day.new(tasks: ["emails"])
+    first_day = Timert::Day.new(tasks: ["emails"])
+    second_day = Timert::Day.new(tasks: ["emails"])
     expect(first_day).to eq(second_day)
   end
 
@@ -203,7 +203,7 @@ describe Day do
   context "when it's initialized with date" do
     before do
       Timecop.freeze(Time.new(2013, 5, 12, 12, 30))
-      @day = Day.new(date: Date.new(2013, 5, 12))      
+      @day = Timert::Day.new(date: Date.new(2013, 5, 12))      
     end
 
     after do
