@@ -35,7 +35,7 @@ describe Report do
 
   after(:each) do
     Timecop.return
-    File.delete(path)
+    File.delete(path)    
   end
 
   it 'should generate report for today' do

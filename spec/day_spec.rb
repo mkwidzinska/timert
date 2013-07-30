@@ -6,6 +6,10 @@ describe Day do
   before(:each) do
     @day = Day.new
   end
+
+  def now
+    Time.now.to_i
+  end
   
   it 'should have method intervals that returns array' do
     expect(@day.intervals.instance_of?(Array)).to eq(true)
@@ -109,20 +113,21 @@ describe Day do
   context 'after initialized with hash data' do
     before do
       @day = Day.new(
-        intervals: [{"start" => 124, "stop" => 1300}],
+        intervals: [{"start" => now, "stop" => now + 300}],
         tasks: ["debugging", "emails"]
       )      
     end
 
     it 'should contain appropiate data' do
-      expect(@day.intervals.last["start"]).to eq(124)
-      expect(@day.intervals.last["stop"]).to eq(1300)
+      expect(@day.intervals.last["start"]).to eq(now)
+      expect(@day.intervals.last["stop"]).to eq(now + 300)
       expect(@day.tasks).to eq(["debugging", "emails"])      
+      expect(@day.date).to eq(Time.now.to_date)      
     end
 
     it "should have to_hash method that returns day's state" do
       hash = {
-        "intervals" => [{"start" => 124, "stop" => 1300}],
+        "intervals" => [{"start" => now, "stop" => now + 300}],
         "tasks" => ["debugging", "emails"]        
       }
       expect(@day.to_hash).to eq(hash)  
@@ -193,11 +198,26 @@ describe Day do
     expect { @day.add_start(time + 1000) }.not_to raise_error()
   end
 
-  def duration(hours, minutes, seconds)
-    hours * 60 * 60 + minutes * 60 + seconds
+  context 'when one start time and no stop time has been added' do
+    before do
+      Timecop.freeze(Time.new(2013, 5, 12, 12, 30))
+      @day.add_start(now)
+    end
+
+    after do
+      Timecop.return
+    end
+
+    it "should set a date to the start time's date" do
+      expect(@day.date).to eq(Date.new(2013, 5, 12))      
+    end
+
+    it "should raise error if a stop time with a different date is added" do
+      expect { @day.add_stop(Time.new(2013, 6, 14, 12).to_i) }.to raise_error
+    end
   end
 
-  def now
-    Time.now.to_i
+  def duration(hours, minutes, seconds)
+    hours * 60 * 60 + minutes * 60 + seconds
   end
 end

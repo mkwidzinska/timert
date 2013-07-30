@@ -1,20 +1,22 @@
 class Day
 
-  attr_reader :intervals, :tasks
+  attr_reader :intervals, :tasks, :date
   attr_accessor :on
 
   def initialize(args = {})    
     @intervals = args[:intervals] || []
-    @tasks = args[:tasks] || []    
+    @tasks = args[:tasks] || []  
+    @date = date_from_intervals
   end
 
   def add_start(time)
-    if !is_interval_started?
+    if !is_interval_started?      
       if time <= last_start
         raise ArgumentError.new("Invalid start time")
       elsif time < last_stop
-        raise ArgumentError.new("Invalid start time. It's before the last stop time.")
+        raise ArgumentError.new("Invalid start time. It's before the last stop time.")      
       end
+      @date = date_from(time) if !has_intervals?
       @intervals.push({"start" => time}) 
       time
     end
@@ -24,6 +26,8 @@ class Day
     if is_interval_started?      
       if time < last_start
         raise ArgumentError.new("Invalid stop time")
+      elsif !is_date_correct?(time)
+        raise ArgumentError.new("Invalid date")
       end
       @intervals.last["stop"] = time 
       time
@@ -78,6 +82,22 @@ class Day
 
   def last_interval
     @intervals.length > 0 ? @intervals.last : {}
+  end
+
+  def has_intervals?
+    last_interval != {}
+  end
+
+  def date_from(timestamp)
+    @date = Time.at(timestamp).to_date
+  end
+
+  def is_date_correct?(timestamp)
+    Time.at(timestamp).to_date == @date
+  end
+
+  def date_from_intervals
+    date_from(@intervals[0]["start"]) if has_intervals?
   end
 
   def interval_end_when_start(timestamp)

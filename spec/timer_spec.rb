@@ -15,18 +15,14 @@ describe Timer do
     end
   end
 
-  it 'should return stop time when stopped' do    
-    Timecop.freeze(Time.new(2013, 2, 14, 22, 0)) do
-      @timer.start
-    end
-    Timecop.freeze(Time.new(2013, 2, 15, 22, 0)) do
-      expect(@timer.stop[:time]).to eq(Time.now.to_i)
-    end
-  end
-
   context 'while running' do
     before do
+      Timecop.freeze(Time.new(2013, 2, 14, 22, 0))
       @timer.start
+    end
+
+    after do
+      Timecop.return
     end
 
     it "should not start again until it's stopped" do
@@ -36,6 +32,14 @@ describe Timer do
       @timer.stop
       expect(@timer.start(time + 10)[:started]).to eq(true)
     end    
+
+    context 'and then stopped' do
+      it 'should return stop time' do    
+        Timecop.freeze(Time.new(2013, 2, 14, 23, 0)) do
+          expect(@timer.stop[:time]).to eq(Time.now.to_i)      
+        end
+      end
+    end
   end  
 
   context 'while not running' do
