@@ -6,7 +6,7 @@ class Day
   def initialize(args = {})    
     @intervals = args[:intervals] || []
     @tasks = args[:tasks] || []  
-    @date = date_from_intervals
+    @date = args[:date]
   end
 
   def add_start(time)
@@ -15,8 +15,9 @@ class Day
         raise ArgumentError.new("Invalid start time")
       elsif time < last_stop
         raise ArgumentError.new("Invalid start time. It's before the last stop time.")      
+      elsif !is_date_correct?(time)
+        raise ArgumentError.new("Invalid date")
       end
-      @date = date_from(time) if !has_intervals?
       @intervals.push({"start" => time}) 
       time
     end
@@ -84,20 +85,8 @@ class Day
     @intervals.length > 0 ? @intervals.last : {}
   end
 
-  def has_intervals?
-    last_interval != {}
-  end
-
-  def date_from(timestamp)
-    @date = Time.at(timestamp).to_date
-  end
-
   def is_date_correct?(timestamp)
-    Time.at(timestamp).to_date == @date
-  end
-
-  def date_from_intervals
-    date_from(@intervals[0]["start"]) if has_intervals?
+    !@date || Time.at(timestamp).to_date == @date 
   end
 
   def interval_end_when_start(timestamp)

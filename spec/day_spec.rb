@@ -1,3 +1,4 @@
+require 'date'
 require 'timecop'
 
 require_relative '../lib/day'
@@ -114,7 +115,8 @@ describe Day do
     before do
       @day = Day.new(
         intervals: [{"start" => now, "stop" => now + 300}],
-        tasks: ["debugging", "emails"]
+        tasks: ["debugging", "emails"],
+        date: Time.now.to_date
       )      
     end
 
@@ -198,21 +200,22 @@ describe Day do
     expect { @day.add_start(time + 1000) }.not_to raise_error()
   end
 
-  context 'when one start time and no stop time has been added' do
+  context "when it's initialized with date" do
     before do
       Timecop.freeze(Time.new(2013, 5, 12, 12, 30))
-      @day.add_start(now)
+      @day = Day.new(date: Date.new(2013, 5, 12))      
     end
 
     after do
       Timecop.return
     end
 
-    it "should set a date to the start time's date" do
-      expect(@day.date).to eq(Date.new(2013, 5, 12))      
+    it "should raise error if a start time with a different date is added" do
+      expect { @day.add_start(Time.new(2013, 6, 14, 12).to_i) }.to raise_error
     end
 
     it "should raise error if a stop time with a different date is added" do
+      @day.add_start(now)      
       expect { @day.add_stop(Time.new(2013, 6, 14, 12).to_i) }.to raise_error
     end
   end
