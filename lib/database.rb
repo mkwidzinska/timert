@@ -23,7 +23,7 @@ class Database
       if range.include?(day.date)
         result << day
       end
-    end
+    end 
     result
   end
 

@@ -36,17 +36,19 @@ class Report
     days = database.days(range)
     
     s = "\nDay/time elapsed\n".green
-    total_time = 0
+    total_time, total_rounded_duration = 0, 0
     
     days.each do |day|
+      duration = duration(day.total_elapsed_time)
       s += "#{format_date(day.date)}: ".yellow + 
-        "#{parse_duration(day.total_elapsed_time)} " +
+        "#{duration.to_s} / #{duration.round} " +
         "(#{format_tasks(day)})\n"
-      total_time += day.total_elapsed_time
+      total_time += duration.value
+      total_rounded_duration += duration.round.to_f
     end
     
     s += "\nTotal:\n".green
-    s += parse_duration(total_time)
+    s += "#{parse_duration(total_time)} / #{total_rounded_duration}"
     s
   end
 
@@ -87,10 +89,14 @@ class Report
   end
 
   def self.parse_duration(duration)
-    Duration.new(duration).to_s
+    duration(duration).to_s
+  end
+
+  def self.duration(duration)
+    Duration.new(duration)
   end
 
   def self.round_duration(duration)
-    Duration.new(duration).round
+    duration(duration).round
   end
 end
