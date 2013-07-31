@@ -4,12 +4,10 @@ require 'timecop'
 require_relative '../lib/timert/day'
 
 describe Timert::Day do
+  let(:now) { Time.now.to_i}
+
   before(:each) do
     @day = Timert::Day.new
-  end
-
-  def now
-    Time.now.to_i
   end
   
   it 'should have method intervals that returns array' do
@@ -50,16 +48,14 @@ describe Timert::Day do
   end
 
   it "should not add a new interval when the last one hasn't been completed" do
-    time = now
-    @day.add_start(time)
-    expect { @day.add_start(time) }.not_to change(@day, :intervals)
+    @day.add_start(now)
+    expect { @day.add_start(now) }.not_to change(@day, :intervals)
   end
 
   it "should not add a new interval when no interval is started" do
-    time = now
-    @day.add_start(time)
-    @day.add_stop(time + 100)
-    expect { @day.add_stop(time + 200) }.to_not change(@day, :intervals)
+    @day.add_start(now)
+    @day.add_stop(now + 100)
+    expect { @day.add_stop(now + 200) }.to_not change(@day, :intervals)
   end
 
   it 'should have a method that returns total elapsed time' do
@@ -147,14 +143,12 @@ describe Timert::Day do
   end
 
   it "should return start time when it's added" do
-    time = now
-    expect(@day.add_start(time)).to eq(time)
+    expect(@day.add_start(now)).to eq(now)
   end
 
   it "should return stop time when it's added" do
-    time = now
-    @day.add_start(time - 100)
-    expect(@day.add_stop(time)).to eq(time)
+    @day.add_start(now - 100)
+    expect(@day.add_stop(now)).to eq(now)
   end
 
   it 'should be equal to other day with the same data' do
@@ -164,50 +158,43 @@ describe Timert::Day do
   end
 
   it 'should have a method that returns last start time' do
-    time = now
-    @day.add_start(time)
-    expect(@day.last_start).to eq(time)
+    @day.add_start(now)
+    expect(@day.last_start).to eq(now)
   end
 
   it 'should have a method that returns last stop time' do
-    time = now
-    @day.add_start(time - 500)
-    @day.add_stop(time)
-    expect(@day.last_stop).to eq(time)
+    @day.add_start(now - 500)
+    @day.add_stop(now)
+    expect(@day.last_stop).to eq(now)
   end
 
   it 'should raise an ArgumentError if passed stop time is lower than last start time' do
-    time = now
-    @day.add_start(time)    
-    expect { @day.add_stop(time - 300) }.to raise_error(ArgumentError)
+    @day.add_start(now)
+    expect { @day.add_stop(now - 300) }.to raise_error(ArgumentError)
   end
 
   it 'should raise an ArgumentError if passed start time is lower than last start time' do
-    time = now
-    @day.add_start(time)    
-    @day.add_stop(time + 600)
-    expect { @day.add_start(time - 500) }.to raise_error(ArgumentError)
+    @day.add_start(now)
+    @day.add_stop(now + 600)
+    expect { @day.add_start(now - 500) }.to raise_error(ArgumentError)
   end
 
   it 'should raise an ArgumentError if passed start time is equal to last start time' do
-    time = now
-    @day.add_start(time)    
-    @day.add_stop(time + 600)
-    expect { @day.add_start(time) }.to raise_error(ArgumentError)
+    @day.add_start(now)
+    @day.add_stop(now + 600)
+    expect { @day.add_start(now) }.to raise_error(ArgumentError)
   end
 
   it 'should raise an ArgumentError if passed start time is lower than last stop time' do
-    time = now
-    @day.add_start(time)
-    @day.add_stop(time + 1000)
-    expect { @day.add_start(time + 500) }.to raise_error(ArgumentError)
+    @day.add_start(now)
+    @day.add_stop(now + 1000)
+    expect { @day.add_start(now + 500) }.to raise_error(ArgumentError)
   end
 
   it 'should not raise an ArgumentError if passed start time is equal to last stop time' do
-    time = now
-    @day.add_start(time)
-    @day.add_stop(time + 1000)
-    expect { @day.add_start(time + 1000) }.not_to raise_error()
+    @day.add_start(now)
+    @day.add_stop(now + 1000)
+    expect { @day.add_start(now + 1000) }.not_to raise_error()
   end
 
   context "when it's initialized with date" do
