@@ -75,27 +75,28 @@ describe Timert::Day do
   end
 
   context "when calculating total elapsed time and when last interval isn't finished" do
-    before do
-      Timecop.freeze(Time.new(2013, 6, 10, 18, 10, 20)) do
-        @day.add_start(Time.new(2013, 6, 10, 12, 34).to_i)
-        @day.add_stop(Time.new(2013, 6, 10, 14, 51, 10).to_i)
-        @day.add_start(Time.new(2013, 6, 10, 16, 10, 20).to_i)    
-        expect(@day.total_elapsed_time).to eq(duration(4, 17, 10))
-      end
-    end
-
+    let(:now) { Time.new(2013, 6, 10, 18, 10) }
+    
     context 'and the day is today' do
+      let(:start_of_work) { Time.new(2013, 6, 10, 12, 0) }
+
       it "should assume the interval's end to now" do
-        Timecop.freeze(Time.new(2013, 6, 10, 18, 10, 20)) do
-          expect(@day.total_elapsed_time).to eq(duration(4, 17, 10))
+        Timecop.freeze(now) do
+          @day.add_start(start_of_work.to_i)
+           # It is 6h and 10min between work started at 12:00 and now (18:10).
+          expect(@day.total_elapsed_time).to eq(duration(6, 10, 0))
         end
       end
     end
 
     context "and the day is yesterday" do
+      let(:start_of_work) { Time.new(2013, 6, 9, 13, 30) }
+
       it "should assume the interval's end to the last second of yesteday" do
-        Timecop.freeze(Time.new(2013, 6, 11, 18, 10, 20)) do
-          expect(@day.total_elapsed_time).to eq(duration(10, 6, 49))
+        @day.add_start(start_of_work.to_i)
+        Timecop.freeze(now) do
+          # It is 10h and 30min between work started at 13:30 and end of the day.
+          expect(@day.total_elapsed_time).to eq(duration(10, 30, 0))
         end
       end
     end

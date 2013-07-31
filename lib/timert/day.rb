@@ -100,7 +100,7 @@ module Timert
 
     def last_second_of_day(timestamp)
       time = Time.at(timestamp)
-      Time.new(time.year, time.month, time.day, 23, 59, 59)
+      Time.new(time.year, time.month, time.day + 1, 0)
     end
   end
 end
