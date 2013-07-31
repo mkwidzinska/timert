@@ -14,7 +14,7 @@ describe Timert::Day do
     expect(@day.intervals.instance_of?(Array)).to eq(true)
   end
 
-  context 'containing a 100 seconds interval' do
+  context 'containing a completed, 100 seconds interval' do
     before  do
       @day.add_start(now)
       @day.add_stop(now + 100)
@@ -45,17 +45,15 @@ describe Timert::Day do
     it 'should have a method that returns the time of the last start' do
       expect(@day.last_stop).to eq(now + 100)
     end
+
+    it "should not add a new interval when no interval is started" do
+      expect { @day.add_stop(now + 200) }.to_not change(@day, :intervals)
+    end
   end
 
   it "should not add a new interval when the last one hasn't been completed" do
     @day.add_start(now)
     expect { @day.add_start(now) }.not_to change(@day, :intervals)
-  end
-
-  it "should not add a new interval when no interval is started" do
-    @day.add_start(now)
-    @day.add_stop(now + 100)
-    expect { @day.add_stop(now + 200) }.to_not change(@day, :intervals)
   end
 
   it 'should have a method that returns total elapsed time' do
