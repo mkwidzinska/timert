@@ -40,8 +40,8 @@ describe Timert::Database do
   end
 
   it 'should have a method for getting a range of days' do
-    first = Timert::Day.new(tasks: "emails", date: Date.new(2013, 9, 10))
-    second = Timert::Day.new(tasks: "meetings", date: Date.new(2013, 9, 11))
+    first = Timert::Day.new(tasks: ["emails"], date: Date.new(2013, 9, 10))
+    second = Timert::Day.new(tasks: ["meetings"], date: Date.new(2013, 9, 11))
     
     past = Timecop.freeze(first.date) do
       @db.save(first)

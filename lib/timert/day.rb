@@ -8,6 +8,9 @@ module Timert
       @intervals = args[:intervals] || []
       @tasks = args[:tasks] || []  
       @date = args[:date]
+      
+      raise ArgumentError.new("intervals should be an array") if !@intervals.is_a?(Array)
+      raise ArgumentError.new("tasks should be an array") if !@tasks.is_a?(Array)      
     end
 
     def add_start(time)
@@ -48,7 +51,7 @@ module Timert
 
     def to_hash
       {
-        "tasks" => @tasks,
+        "tasks" => @tasks.uniq,
         "intervals" => @intervals
       }
     end

@@ -113,12 +113,25 @@ describe Timert::Day do
   end
 
   context 'after initialized with hash data' do
+    let(:day_with_errors) { Timert::Day.new(
+      intervals: {"start" => now}, 
+      tasks: "mails"
+      ) }
+    
     before do
       @day = Timert::Day.new(
         intervals: [{"start" => now, "stop" => now + 300}],
         tasks: ["debugging", "emails"],
         date: Time.now.to_date
       )      
+    end
+
+    it "should raise error if tasks aren't an array" do
+      expect { day_with_errors }.to raise_error
+    end
+
+    it "should raise error if intervals aren't an array" do
+      expect { day_with_errors }.to raise_error
     end
 
     it 'should contain appropiate data' do
@@ -218,6 +231,14 @@ describe Timert::Day do
     it "should raise error if a stop time with a different date is added" do
       @day.add_start(now)      
       expect { @day.add_stop(Time.new(2013, 6, 14, 12).to_i) }.to raise_error
+    end
+  end
+
+  context "when a task is added more than once" do
+    it "should ignore it" do
+      @day.add_task("mails")
+      @day.add_task("mails")
+      expect(@day.to_hash).to eq({"tasks" => ["mails"], "intervals" => []})
     end
   end
 
