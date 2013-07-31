@@ -30,7 +30,11 @@ describe Timert::Duration do
   end
 
   it 'should have a method that returns rounded, decimal duration' do
-    expect(Timert::Duration.from(5, 13, 12).round).to eq("5.5")
+    expect(Timert::Duration.from(5, 13, 12).round).to eq("5.0")
+    expect(Timert::Duration.from(5, 15, 12).round).to eq("5.5")
+    expect(Timert::Duration.from(5, 35, 12).round).to eq("5.5")
+    expect(Timert::Duration.from(5, 46, 12).round).to eq("6.0")
+    expect(Timert::Duration.from(5, 59, 12).round).to eq("6.0")
   end
 
 end

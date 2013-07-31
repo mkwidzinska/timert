@@ -14,7 +14,7 @@ module Timert
     end
 
     def round
-      ((value / 1800.0).ceil / 2.0).to_s
+      ((value / 1800.0).round / 2.0).to_s
     end
 
     def to_s
