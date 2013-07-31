@@ -52,18 +52,14 @@ describe Timert::Day do
   it "should not add a new interval when the last one hasn't been completed" do
     time = now
     @day.add_start(time)
-    expect(@day.intervals.length).to eq(1)
-    @day.add_start(time)
-    expect(@day.intervals.length).to eq(1)
+    expect { @day.add_start(time) }.not_to change(@day, :intervals)
   end
 
-  it "should not add stop time when no interval is started" do
+  it "should not add a new interval when no interval is started" do
     time = now
     @day.add_start(time)
     @day.add_stop(time + 100)
-    @day.add_stop(time + 200)   
-    expect(@day.intervals.length).to eq(1)
-    expect(@day.intervals.last["stop"]).to eq(time + 100)
+    expect { @day.add_stop(time + 200) }.to_not change(@day, :intervals)
   end
 
   it 'should have a method that returns total elapsed time' do
@@ -117,7 +113,7 @@ describe Timert::Day do
       intervals: {"start" => now}, 
       tasks: "mails"
       ) }
-    
+
     before do
       @day = Timert::Day.new(
         intervals: [{"start" => now, "stop" => now + 300}],
