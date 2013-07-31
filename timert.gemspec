@@ -4,8 +4,8 @@ Gem::Specification.new do |s|
   s.date        = '2013-07-30'
   s.summary     = "Timert is a simple time tracking tool for the console."
   s.description = "Timert is a simple time tracking tool for the console. "\
-    "The main feature is that you can specify an hour you want the timer "\
-    "to start or to stop. Moreover, it provides summary reports "\
+    "If necessary you can specify a time you want the timer "\
+    "to start or to stop. The tool provides also summary reports "\
     "for a given day, week or month"
   s.authors     = ["Gosia Kwidzinska"]
   s.email       = 'g.kwidzinska@gmail.com'

@@ -1,9 +1,7 @@
 # Timert
 
 Timert is a simple time tracking tool for the console.
-The main feature is that you can specify an hour you want the timer
-to start or to stop. Moreover, it provides summary reports for a given day, 
-week or month.
+If necessary you can specify a time you want the timer to start or to stop.The tool provides also summary reports for a given day, week or month.
 
 # Installation
 
@@ -24,29 +22,29 @@ $ timert
 List of commands:
 
 ``` shell
-start [ARG]             Starts the timer. [ARG]: hour.
-stop [ARG]              Stops the timer. [ARG]: hour.
+start [ARG]             Starts the timer. [ARG]: time.
+stop [ARG]              Stops the timer. [ARG]: time.
 report [ARG]            Displays a summary report. [ARG]: number, 'week' or 'month'.
 <anything else>         Adds a task.
 ```
 
 # Examples
 
-Start the timer at the current hour:
+Start the timer at the current time:
 
 ``` shell
 $ timert start
 ```
 
 
-Start the timer at the given hour:
+Start the timer at the given time:
 
 ``` shell
 $ timert start 12:20      
 ```
 
 
-Stop the timer at the given hour:
+Stop the timer at the given time:
 
 ``` shell
 $ timert stop 14
