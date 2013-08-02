@@ -114,11 +114,11 @@ describe Timert::Application do
 
   context 'when initialized with report argument' do
     before do
-      @app = Timert::Application.new(["start"], path)      
+      @app = Timert::Application.new(["report"], path)      
     end
 
     it 'should have a method that returns hash result' do
-      expect(@app.result["message"].instance_of?(String)).to eq(true)
+      expect(@app.result["message"].include?("REPORT")).to eq(true)
     end
   end
 

@@ -1,58 +1,83 @@
 require 'timecop'
 
 require_relative '../lib/timert/report'
-require_relative '../lib/timert/database'
-require_relative '../lib/timert/database_file'
-require_relative '../lib/timert/day'
 
 describe Timert::Report do
-  let(:path) { './spec/data/timert' }
-  let(:database) { 
-    db = Timert::Database.new(Timert::DatabaseFile.new(path))     
+  let(:today) { Date.new(2013, 2, 20) }
+  let(:yesteday) { Date.new(2013, 2, 19) }
+  let(:database) { double }
 
-    Timecop.freeze(Time.new(2013, 2, 20, 19)) do
-      db.save(sample_day)
-    end
-    Timecop.freeze(Time.new(2013, 2, 19, 19)) do
-      db.save(sample_day)
-    end
-    db
-  }
+  let(:first_day) do
+    double(total_elapsed_time: 3.5 * 3600, 
+      date: today,
+      tasks: ["emails", "meeting"],
+      intervals: [
+        {"start" => time(today, 16), "stop" => time(today, 18, 30)},
+        {"start" => time(today, 19), "stop" => time(today, 20)}
+      ])
+  end
 
-  def sample_day
-    day = Timert::Day.new
-    day.add_start(Time.new(2013, 2, 20, 14, 00).to_i)
-    day.add_stop(Time.new(2013, 2, 20, 15, 13).to_i)
-    day.add_start(Time.new(2013, 2, 20, 16, 4, 24).to_i)
-    day.add_stop(Time.new(2013, 2, 20, 18, 45).to_i)
-    day.add_task("emails")
-    day.add_task("meeting")
-    day
+  let(:second_day) do
+    double(total_elapsed_time: 7 * 3600, 
+      date: yesteday,
+      tasks: ["reports", "bugs"],
+      intervals: [
+        {"start" => time(yesteday, 11, 30), "stop" => time(yesteday, 16)},
+        {"start" => time(yesteday, 16, 30), "stop" => time(yesteday, 19, 30)}
+      ])
   end
 
   before(:each) do
-    database
-    Timecop.freeze(Time.new(2013, 2, 20))
+    Timecop.freeze(today)
   end
 
   after(:each) do
-    Timecop.return
-    File.delete(path)    
+    Timecop.return    
   end
 
   it 'should generate report for today' do
-    expect(Timert::Report.generate(database).instance_of?(String)).to eq(true)
+    database.should_receive(:day).with(today).and_return(first_day)
+    
+    report = Timert::Report.generate(database)
+    expect(report.include?("2013-02-20")).to eq(true)
+    expect(report.include?("emails")).to eq(true)
+    expect(report.include?("meeting")).to eq(true)
+    expect(report.include?("3.5")).to eq(true)
   end
 
-  it 'should generate report for any past day' do
-    expect(Timert::Report.generate(database, -1).instance_of?(String)).to eq(true)
+  it 'should generate report for any past day' do    
+    database.should_receive(:day).with(yesteday).and_return(second_day)
+
+    report = Timert::Report.generate(database, -1)
+    expect(report.include?("2013-02-19")).to eq(true)
+    expect(report.include?("reports")).to eq(true)
+    expect(report.include?("bugs")).to eq(true)
+    expect(report.include?("7")).to eq(true)
   end
 
   it 'should generate report for this week' do
-    expect(Timert::Report.generate(database, "week").instance_of?(String)).to eq(true)
+    database.should_receive(:days).and_return([first_day, second_day])
+
+    report = Timert::Report.generate(database, "week")
+    expect(report.include?("WEEK")).to eq(true)
+    expect(report.include?("2013-02-19")).to eq(true)
+    expect(report.include?("2013-02-20")).to eq(true)
+    expect(report.include?("Total")).to eq(true)
+    expect(report.include?("10.5")).to eq(true)
   end
 
   it 'should generate report for this month' do
-    expect(Timert::Report.generate(database, "month").instance_of?(String)).to eq(true)
+    database.should_receive(:days).and_return([first_day, second_day])
+
+    report = Timert::Report.generate(database, "month")
+    expect(report.include?("MONTH")).to eq(true)
+    expect(report.include?("2013-02-19")).to eq(true)
+    expect(report.include?("2013-02-20")).to eq(true)
+    expect(report.include?("Total")).to eq(true)
+    expect(report.include?("10.5")).to eq(true)
+  end
+
+  def time(day, hours, minutes = 0, seconds = 0)
+    day.to_time.to_i + hours * 3600 + minutes * 60 + seconds
   end
 end

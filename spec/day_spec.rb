@@ -6,6 +6,7 @@ require_relative '../lib/timert/day'
 describe Timert::Day do
   let(:now) { Time.now.to_i}
 
+  # zamienic na let
   before(:each) do
     @day = Timert::Day.new
   end
@@ -15,7 +16,7 @@ describe Timert::Day do
   end
 
   context 'containing a completed, 100 seconds interval' do
-    before  do
+    before do
       @day.add_start(now)
       @day.add_stop(now + 100)
     end
@@ -42,7 +43,7 @@ describe Timert::Day do
       expect(@day.last_start).to eq(now)      
     end
 
-    it 'should have a method that returns the time of the last start' do
+    it 'should have a method that returns the time of the last stop' do
       expect(@day.last_stop).to eq(now + 100)
     end
 
@@ -92,7 +93,7 @@ describe Timert::Day do
     end
   end
 
-  it 'should have task method that returns an array' do
+  it 'should have tasks method that returns an array' do
     expect(@day.tasks.instance_of?(Array)).to eq(true)    
   end
 
@@ -103,28 +104,28 @@ describe Timert::Day do
   end
 
   context 'after initialized with hash data' do
-    let(:day_with_errors) { Timert::Day.new(
-      intervals: {"start" => now}, 
-      tasks: "mails"
-      ) }
-
-    before do
-      @day = Timert::Day.new(
+    let(:valid_params) do
+      { 
         intervals: [{"start" => now, "stop" => now + 300}],
         tasks: ["debugging", "emails"],
         date: Time.now.to_date
-      )      
+      } 
     end
 
-    it "should raise error if tasks aren't an array" do
-      expect { day_with_errors }.to raise_error
+    before do
+      @day = Timert::Day.new(valid_params)      
+    end
+
+    it "should raise error if tasks aren't an array" do      
+      expect { Timert::Day.new(valid_params.merge(tasks: "mails")) }.to raise_error
     end
 
     it "should raise error if intervals aren't an array" do
-      expect { day_with_errors }.to raise_error
+      expect { Timert::Day.new(valid_params.merge(intervals: {"start" => 0})) }.to raise_error
     end
 
-    it 'should contain appropiate data' do
+    # rozdzielic
+    it 'should contain appropriate data' do
       expect(@day.intervals.last["start"]).to eq(now)
       expect(@day.intervals.last["stop"]).to eq(now + 300)
       expect(@day.tasks).to eq(["debugging", "emails"])      
@@ -155,17 +156,6 @@ describe Timert::Day do
     expect(first_day).to eq(second_day)
   end
 
-  it 'should have a method that returns last start time' do
-    @day.add_start(now)
-    expect(@day.last_start).to eq(now)
-  end
-
-  it 'should have a method that returns last stop time' do
-    @day.add_start(now - 500)
-    @day.add_stop(now)
-    expect(@day.last_stop).to eq(now)
-  end
-
   it 'should raise an ArgumentError if passed stop time is lower than last start time' do
     @day.add_start(now)
     expect { @day.add_stop(now - 300) }.to raise_error(ArgumentError)
@@ -192,7 +182,7 @@ describe Timert::Day do
   it 'should not raise an ArgumentError if passed start time is equal to last stop time' do
     @day.add_start(now)
     @day.add_stop(now + 1000)
-    expect { @day.add_start(now + 1000) }.not_to raise_error()
+    expect { @day.add_start(now + 1000) }.not_to raise_error
   end
 
   context "when it's initialized with date" do
@@ -216,9 +206,12 @@ describe Timert::Day do
   end
 
   context "when a task is added more than once" do
+    before do
+      @day.add_task("mails")
+      @day.add_task("mails")      
+    end
+
     it "should ignore it" do
-      @day.add_task("mails")
-      @day.add_task("mails")
       expect(@day.to_hash).to eq({"tasks" => ["mails"], "intervals" => []})
     end
   end
