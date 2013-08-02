@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'timert'
-  s.version     = '1.0.0'
+  s.version     = '1.0.1'
   s.date        = '2013-07-30'
   s.summary     = "Timert is a simple time tracking tool for the console."
   s.description = "Timert is a simple time tracking tool for the console. "\
@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.test_files  = Dir.glob("{spec}/**/*")
   s.executables = ['timert']
   s.homepage    =
-    'http://rubygems.org/gems/timert'
+    'http://github.com/mkwidzinska/timert'
 
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'timecop'
