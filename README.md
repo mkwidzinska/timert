@@ -102,7 +102,7 @@ Total elapsed time:
 1h 40min 0sec
 
 Summary:
-2.0 - writing emails
+1.5 - writing emails
 ```
 
 # Data
