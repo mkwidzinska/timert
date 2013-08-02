@@ -1,7 +1,7 @@
 # Timert
 
 Timert is a simple time tracking tool for the console.
-If necessary you can specify a time you want the timer to start or to stop.The tool provides also summary reports for a given day, week or month.
+If necessary you can specify a time you want the timer to start or to stop. The tool provides also summary reports for a given day, week or month.
 
 # Installation
 
@@ -104,3 +104,6 @@ Total elapsed time:
 Summary:
 2.0 - writing emails
 ```
+
+# Data
+Timert's data is stored in JSON format in ~/.timert.
