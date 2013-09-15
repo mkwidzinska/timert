@@ -16,6 +16,7 @@ Gem::Specification.new do |s|
     'http://github.com/mkwidzinska/timert'
 
   s.add_development_dependency 'rspec'
+  s.add_development_dependency 'guard-rspec'
   s.add_development_dependency 'timecop'
   s.add_runtime_dependency 'colorize'
 end
