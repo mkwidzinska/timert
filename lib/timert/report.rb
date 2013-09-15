@@ -19,7 +19,7 @@ module Timert
     private
     def self.report_for_week(database)
       today = Date.today
-      first = today - today.cwday
+      first = today - today.cwday + 1
       last = first + 6
       "REPORT FOR THIS WEEK\n".blue +
         report_for_range(Range.new(first, last), database)
