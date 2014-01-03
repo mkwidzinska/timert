@@ -86,6 +86,18 @@ describe Timert::Day do
           expect(day.total_elapsed_time).to eq(duration(10, 30, 0))
         end
       end
+
+      context "and yesterday was the last day of the year" do
+        let(:new_years_eve) { Time.new(2013, 12, 31, 12, 30) }
+        let(:new_year) { Time.new(2014, 1, 1, 11, 0) }
+
+        it "should not raise an error" do
+          day.add_start(new_years_eve.to_i)
+          Timecop.freeze(new_year) do
+            expect{ day.total_elapsed_time }.not_to raise_error
+          end
+        end
+      end
     end
   end
 
