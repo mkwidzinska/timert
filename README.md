@@ -24,7 +24,7 @@ List of commands:
 ``` shell
 start [ARG]             Starts the timer. [ARG]: time.
 stop [ARG]              Stops the timer. [ARG]: time.
-report [ARG]            Displays a summary report. [ARG]: number, 'week [number]' or 'month'.
+report [ARG]            Displays a summary report. [ARG]: number, 'week [number]' or 'month [number]'.
 <anything else>         Adds a task.
 ```
 
@@ -81,6 +81,12 @@ Display a summary report for this month:
 
 ``` shell
 $ timert report month
+```
+
+Display a summary report for the last month:
+
+``` shell
+$ timert report month -1
 ```
 
 

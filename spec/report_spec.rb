@@ -9,6 +9,7 @@ describe Timert::Report do
   let(:sunday) { Date.new(2013, 2, 24) }
   let(:last_monday) { Date.new(2013, 2, 11) }
   let(:last_sunday) { Date.new(2013, 2, 17) }
+  let(:last_month) { Date.new(2013, 1, 10) }
   let(:database) { double }
 
   let(:first_day) do
@@ -37,6 +38,15 @@ describe Timert::Report do
       tasks: ["code review"],
       intervals: [
         {"start" => time(sunday, 20, 15), "stop" => time(sunday, 22, 15)}
+      ])
+  end
+
+  let(:last_month_day) do
+    double(total_elapsed_time: 4 * 3600,
+      date: last_month,
+      tasks: ["article"],
+      intervals: [
+        {"start" => time(last_month, 14, 15), "stop" => time(last_month, 18, 15)}
       ])
   end
 
@@ -101,6 +111,16 @@ describe Timert::Report do
     expect(report.include?("2013-02-24")).to eq(true)
     expect(report.include?("Total")).to eq(true)
     expect(report.include?("12.5")).to eq(true)
+  end
+
+  it 'should generate report for any past month' do
+    database.should_receive(:days).and_return([last_month_day])
+
+    report = Timert::Report.generate(database, "month -1")
+    expect(report.include?("MONTH 2013-01")).to eq(true)
+    expect(report.include?("2013-01-10")).to eq(true)
+    expect(report.include?("article")).to eq(true)
+    expect(report.include?("4")).to eq(true)
   end
 
   def time(day, hours, minutes = 0, seconds = 0)

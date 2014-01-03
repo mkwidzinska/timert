@@ -11,6 +11,10 @@ describe Timert::DateUtil do
     expect(Timert::DateUtil.format_date(Date.new(2013, 3, 14))).to eq("2013-03-14")
   end
 
+  it 'should return formatted month' do
+    expect(Timert::DateUtil.format_month(Date.new(2013, 1, 22))).to eq("2013-01")
+  end
+
   it 'should parse time' do
     Timecop.freeze(Time.new(2013, 2, 28)) do
       expect(Timert::DateUtil.parse_time("11:14")).to eq(Time.new(2013, 2, 28, 11, 14).to_i)

@@ -11,6 +11,10 @@ module Timert
       date ? date.strftime("%Y-%m-%d") : ""
     end
 
+    def self.format_month(date)
+      date ? date.strftime("%Y-%m") : ""
+    end
+
     def self.parse_time(arg)
       if arg
         hours, minutes = arg.split(":")

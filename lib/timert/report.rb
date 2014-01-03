@@ -8,8 +8,8 @@ module Timert
 
     def self.generate(database, time_expression = "")
       time_expression = time_expression.to_s
-      if time_expression == "month"
-        report_for_month(database)
+      if time_expression.include?("month")
+        report_for_month(database, time_expression)
       elsif time_expression.include?("week")
         report_for_week(database, time_expression)
       else
@@ -18,21 +18,25 @@ module Timert
     end
 
     private
-    def self.report_for_week(database, time_expression)
+    def self.report_for_week(database, time_expression = "")
       week_nr = extract_time_modifier(time_expression)
       today = Date.today
       first = today - today.cwday + 1 + week_nr * 7
       last = first + 6
+
       title = week_nr != 0 ? "REPORT FOR WEEK #{format_date(first)} - #{format_date(last)}" : "REPORT FOR THIS WEEK"
       "#{title}\n".blue +
         report_for_range(Range.new(first, last), database)
     end
 
-    def self.report_for_month(database)
+    def self.report_for_month(database, time_expression = "")
+      month_nr = extract_time_modifier(time_expression)
       today = Date.today
-      first = Date.new(today.year, today.month, 1)
-      last = Date.new(today.year, today.month, -1)
-      "REPORT FOR THIS MONTH\n".blue +
+      first = Date.new(today.year, today.month, 1) << -month_nr
+      last = Date.new(today.year, today.month, -1) << -month_nr
+
+      title = month_nr != 0 ? "REPORT FOR MONTH #{format_month(first)}" : "REPORT FOR THIS MONTH"
+      "#{title}\n".blue +
         report_for_range(Range.new(first, last), database)
     end
 
@@ -90,6 +94,10 @@ module Timert
 
     def self.format_date(date)
       DateUtil.format_date(date)
+    end
+
+    def self.format_month(date)
+      DateUtil.format_month(date)
     end
 
     def self.parse_duration(duration)
