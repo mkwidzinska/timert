@@ -1,7 +1,7 @@
 require_relative '../lib/timert/duration'
 
 describe Timert::Duration do
-  
+
   it 'should have a method that returns the number of hours' do
     expect(Timert::Duration.new(3 * 60 * 60 + 2 * 60).hours).to eq(3)
   end
@@ -21,8 +21,8 @@ describe Timert::Duration do
   end
 
   it 'should return formatted total elapsed time' do
-    expect(Timert::Duration.from(5, 45, 5).to_s).to eq("5h 45min 5sec")    
-    expect(Timert::Duration.from(15, 0, 56).to_s).to eq("15h 0min 56sec")    
+    expect(Timert::Duration.from(5, 45, 5).to_s).to eq("5h 45min 5sec")
+    expect(Timert::Duration.from(15, 0, 56).to_s).to eq("15h 0min 56sec")
   end
 
   it 'should have a method that returns rounded duration when a full-hour duration is passed' do

@@ -48,7 +48,7 @@ describe Timert::Report do
 
   it 'should generate report for Sunday' do
     database.should_receive(:day).with(sunday).and_return(third_day)
-    
+
     report = Timert::Report.generate(database)
     expect(report.include?("2013-02-24")).to eq(true)
     expect(report.include?("code review")).to eq(true)

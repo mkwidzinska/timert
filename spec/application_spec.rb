@@ -7,7 +7,7 @@ describe Timert::Application do
   let(:path) { './spec/data/timert' }
   let(:database) { Timert::Database.new(Timert::DatabaseFile.new(path)) }
   let(:app_with_no_args) { Timert::Application.new([], path) }
-  
+
   after(:each) do
     File.delete(path)
   end
@@ -21,13 +21,13 @@ describe Timert::Application do
   context 'when initialized with start argument' do
     before do
       Timecop.freeze(Time.new(2013, 6, 12, 13, 56))
-      @app = Timert::Application.new(["start"], path)      
+      @app = Timert::Application.new(["start"], path)
     end
 
     after do
       Timecop.return
     end
-    
+
     it 'should perform start operation' do
       expect(database.today.last_start).to eq(Time.now.to_i)
     end
@@ -39,13 +39,13 @@ describe Timert::Application do
     context 'and then initialized with stop argument' do
       before do
         Timecop.freeze(Time.new(2013, 6, 12, 14, 34))
-        @app = Timert::Application.new(["stop"], path)      
+        @app = Timert::Application.new(["stop"], path)
       end
 
       after do
         Timecop.return
       end
-      
+
       it 'should perform stop operation' do
         expect(database.today.last_stop).to eq(Time.now.to_i)
       end
@@ -92,18 +92,18 @@ describe Timert::Application do
 
     it 'should start with given time' do
       expect(database.today.last_start).to eq(Time.now.to_i - 60)
-    end    
+    end
   end
 
   context 'when initialized with start and invalid time argument' do
-    before do 
+    before do
       Timecop.freeze(Time.new(2013, 1, 10, 15)) do
         Timert::Application.new(["start"], path)
       end
       Timecop.freeze(Time.new(2013, 1, 10, 16)) do
         Timert::Application.new(["stop"], path)
       end
-    end    
+    end
 
     it 'should not raise an error' do
       Timecop.freeze(2013, 1, 10, 17, 00) do
@@ -114,7 +114,7 @@ describe Timert::Application do
 
   context 'when initialized with report argument' do
     before do
-      @app = Timert::Application.new(["report"], path)      
+      @app = Timert::Application.new(["report"], path)
     end
 
     it 'should have a method that returns hash result' do
@@ -124,7 +124,7 @@ describe Timert::Application do
 
   context 'when initialized with argument other than start, stop or report' do
     before do
-      @app = Timert::Application.new(["testing the new app"], path)      
+      @app = Timert::Application.new(["testing the new app"], path)
     end
 
     it 'should add task' do
@@ -134,7 +134,7 @@ describe Timert::Application do
     context 'and then initialized with argument that fullfills the same requirements' do
       before do
         @app = Timert::Application.new(["writing emails"], path)
-      end      
+      end
 
       it 'should add another task' do
         expect(database.today.tasks).to eq(["testing the new app", "writing emails"])

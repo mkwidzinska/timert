@@ -2,7 +2,7 @@ module Timert
   class Duration
     attr_reader :hours, :minutes, :seconds, :value
 
-    def initialize(duration)    
+    def initialize(duration)
       @hours = duration / 3600
       @minutes = (duration % 3600) / 60
       @seconds = duration % 60

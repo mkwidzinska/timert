@@ -11,7 +11,7 @@ module Timert
     attr_reader :result
 
     def initialize(argv, db_path)
-      @database = Database.new(DatabaseFile.new(db_path))    
+      @database = Database.new(DatabaseFile.new(db_path))
       @timer = Timer.new(@database.today)
       @result = {}
 
@@ -28,7 +28,7 @@ module Timert
           @database.save(@timer.today)
         else
           add_message("timer already started at #{format_hour(timer_result[:time])}")
-        end    
+        end
       rescue ArgumentError => e
         add_message(e.message)
       end
@@ -37,12 +37,12 @@ module Timert
     def stop(time = nil)
       begin
         timer_result = @timer.stop(time)
-        if timer_result[:stopped]      
+        if timer_result[:stopped]
           add_message("stop timer at #{format_hour(timer_result[:time])}")
           @database.save(@timer.today)
         else
           add_message("timer isn't started yet")
-        end    
+        end
       rescue ArgumentError => e
         add_message(e.message)
       end
@@ -52,7 +52,7 @@ module Timert
       add_message(Report.generate(@database, time_expression))
     end
 
-    def add_task(task)    
+    def add_task(task)
       add_message("added task: #{task}")
       @timer.add_task(task)
       @database.save(@timer.today)
@@ -68,6 +68,6 @@ module Timert
 
     def add_message(msg)
       @result["message"] = msg
-    end  
+    end
   end
 end

@@ -40,7 +40,7 @@ $ timert start
 Start the timer at the given time:
 
 ``` shell
-$ timert start 12:20      
+$ timert start 12:20
 ```
 
 

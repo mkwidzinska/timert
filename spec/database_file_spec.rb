@@ -10,7 +10,7 @@ describe Timert::DatabaseFile do
   after(:each) do
     File.delete(path)
   end
-  
+
   it "should load data that's been saved" do
     data = {
       "example" => "This is a sample data."

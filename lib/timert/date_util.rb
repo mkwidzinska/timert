@@ -2,7 +2,7 @@ require 'date'
 
 module Timert
   class DateUtil
-    
+
     def self.format_hour(timestamp)
       timestamp ? Time.at(timestamp).strftime("%H:%M:%S") : ""
     end

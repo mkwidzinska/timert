@@ -16,7 +16,7 @@ describe Timert::Database do
   end
 
   it 'should have a method for getting the current day' do
-    write_day = Timert::Day.new(tasks: ["emails"])    
+    write_day = Timert::Day.new(tasks: ["emails"])
     @db.save(write_day)
     read_day = @db.day
     expect(write_day.to_hash).to eq(read_day.to_hash)
@@ -24,7 +24,7 @@ describe Timert::Database do
 
   it 'should have a method for getting one of the past days' do
     write_day = Timecop.freeze(Time.new(2013, 8, 12, 12)) do
-      @db.save(Timert::Day.new(tasks: ["meeting"]))    
+      @db.save(Timert::Day.new(tasks: ["meeting"]))
       @db.day
     end
     read_day = Timecop.freeze(Time.new(2013, 8, 14, 12)) do
@@ -42,17 +42,17 @@ describe Timert::Database do
   it 'should have a method for getting a range of days' do
     first = Timert::Day.new(tasks: ["emails"], date: Date.new(2013, 9, 10))
     second = Timert::Day.new(tasks: ["meetings"], date: Date.new(2013, 9, 11))
-    
+
     past = Timecop.freeze(first.date) do
       @db.save(first)
       Date.today - 5
     end
-    
+
     present = Timecop.freeze(second.date) do
       @db.save(second)
       Date.today
     end
-    
+
     expect(@db.days(Range.new(past, present))).to eq([first, second])
   end
 end

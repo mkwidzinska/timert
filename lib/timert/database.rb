@@ -3,7 +3,7 @@ require_relative 'day'
 
 module Timert
   class Database
-    
+
     def initialize(file)
       @file = file
     end
@@ -12,7 +12,7 @@ module Timert
       day
     end
 
-    def day(date = Date.today)    
+    def day(date = Date.today)
       hash_to_day(load_data[key(date)], date)
     end
 
@@ -24,7 +24,7 @@ module Timert
         if range.include?(day.date)
           result << day
         end
-      end 
+      end
       result
     end
 
@@ -35,7 +35,7 @@ module Timert
     end
 
     private
-    
+
     def load_data
       @file.load
     end
@@ -51,7 +51,7 @@ module Timert
     def hash_to_day(day_hash, date)
       if day_hash
         Day.new(
-          intervals: day_hash["intervals"], 
+          intervals: day_hash["intervals"],
           tasks: day_hash["tasks"],
           date: date)
       else

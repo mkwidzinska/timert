@@ -1,5 +1,5 @@
 module Timert
-  class Timer  
+  class Timer
     attr_reader :path, :today
 
     def initialize(today)
@@ -9,7 +9,7 @@ module Timert
     def start(time = nil)
       if !on?
         started = true
-        today.add_start(time || now)          
+        today.add_start(time || now)
       end
       {time: today.last_start, started: started}
     end
@@ -23,16 +23,16 @@ module Timert
     end
 
     def add_task(task)
-      today.add_task(task)    
+      today.add_task(task)
     end
 
-    private    
+    private
     def now
       Time.now.to_i
     end
 
     def on?
       today.is_interval_started?
-    end  
+    end
   end
 end
