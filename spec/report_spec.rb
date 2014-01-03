@@ -7,6 +7,8 @@ describe Timert::Report do
   let(:tuesday) { Date.new(2013, 2, 19) }
   let(:wednesday) { Date.new(2013, 2, 20) }
   let(:sunday) { Date.new(2013, 2, 24) }
+  let(:last_monday) { Date.new(2013, 2, 11) }
+  let(:last_sunday) { Date.new(2013, 2, 17) }
   let(:database) { double }
 
   let(:first_day) do
@@ -76,6 +78,17 @@ describe Timert::Report do
     expect(report.include?("2013-02-24")).to eq(true)
     expect(report.include?("Total")).to eq(true)
     expect(report.include?("12.5")).to eq(true)
+  end
+
+  it 'should generate report for any past week' do
+    database.should_receive(:days).and_return([first_day, second_day])
+    Range.should_receive(:new).with(last_monday, last_sunday)
+
+    report = Timert::Report.generate(database, "week -1")
+    expect(report.include?("WEEK")).to eq(true)
+    expect(report.include?("2013-02-11")).to eq(true)
+    expect(report.include?("2013-02-17")).to eq(true)
+    expect(report.include?("10.5")).to eq(true)
   end
 
   it 'should generate report for this month' do

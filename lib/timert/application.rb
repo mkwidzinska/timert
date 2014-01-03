@@ -48,7 +48,7 @@ module Timert
       end
     end
 
-    def report(time_expression)
+    def report(time_expression = "")
       add_message(Report.generate(@database, time_expression))
     end
 

@@ -7,21 +7,24 @@ module Timert
   class Report
 
     def self.generate(database, time_expression = "")
+      time_expression = time_expression.to_s
       if time_expression == "month"
         report_for_month(database)
-      elsif time_expression == "week"
-        report_for_week(database)
+      elsif time_expression.include?("week")
+        report_for_week(database, time_expression)
       else
         report_for_day(database, time_expression.to_i)
       end
     end
 
     private
-    def self.report_for_week(database)
+    def self.report_for_week(database, time_expression)
+      week_nr = extract_time_modifier(time_expression)
       today = Date.today
-      first = today - today.cwday + 1
+      first = today - today.cwday + 1 + week_nr * 7
       last = first + 6
-      "REPORT FOR THIS WEEK\n".blue +
+      title = week_nr != 0 ? "REPORT FOR WEEK #{format_date(first)} - #{format_date(last)}" : "REPORT FOR THIS WEEK"
+      "#{title}\n".blue +
         report_for_range(Range.new(first, last), database)
     end
 
@@ -99,6 +102,14 @@ module Timert
 
     def self.round_duration(duration)
       duration(duration).round
+    end
+
+    def self.extract_time_modifier(time_expression)
+      if time_expression.include?(" ")
+        time_expression.split(" ")[1].to_i
+      else
+        0
+      end
     end
   end
 end

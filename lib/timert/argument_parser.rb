@@ -8,9 +8,9 @@ module Timert
       if args.empty?
         @action = "help"
         @argument = nil
-      elsif is_api?(args[0])      
-        @action = args[0]      
-        @argument = api_argument(@action, args[1])
+      elsif is_api?(args[0])
+        @action = args[0]
+        @argument = api_argument(@action, *args[1..-1])
       else
         @action = 'add_task'
         @argument = args.join(" ")
@@ -22,11 +22,11 @@ module Timert
       ["start", "stop", "report"].include?(method_name)
     end
 
-    def api_argument(action, arg)
+    def api_argument(action, *args)
       if is_time_method?(action)
-        parse_time(arg)
+        parse_time(args[0])
       elsif is_report?(action)
-        parse_report_arg(arg)
+        parse_report_arg(args)
       end
     end
 
@@ -38,12 +38,12 @@ module Timert
       method_name == "report"
     end
 
-    def is_month_or_week?(arg)
-      arg == "month" || arg == "week"
+    def is_month_or_week?(args)
+      args.include?("month") || args.include?("week")
     end
 
-    def parse_report_arg(arg)
-      is_month_or_week?(arg) ? arg : arg.to_i
+    def parse_report_arg(args)
+      is_month_or_week?(args) ? args.join(" ") : args[0]
     end
 
     def parse_time(arg)
